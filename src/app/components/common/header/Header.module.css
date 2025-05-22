@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 42px;
+  font-weight: 700;
+  width: 100%;
+  height: var(--headerHeightPC);
+  background-color: var(--colorWhite1);
+  border-bottom: 2px solid var(--colorBlack1);
+}
