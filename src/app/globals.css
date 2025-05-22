@@ -138,8 +138,28 @@ body {
   }
 }
 
+main {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  main {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+@media (max-width: 767px) {
+  main {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
+
 .wrap {
   width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   max-width: var(--sizeMaxWidthPC);
   @media (min-width: 768px) and (max-width: 1024px) {
