@@ -1,0 +1,2 @@
+# Next.js_de_ToDo_sinagara_Obenkyo
+Next.jsやらTSやらロジックやらバリデーションやらエラーハンドリングやら関心の分離やらテストやらを高める
