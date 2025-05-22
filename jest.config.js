@@ -1,4 +1,3 @@
-// jest.config.js
 const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
@@ -9,9 +8,8 @@ const customJestConfig = {
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   preset: "ts-jest",
-  testEnvironment: "jsdom",
   transform: {
-    "^.+\\.(ts|tsx)$": "babel-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   transformIgnorePatterns: ["/node_modules/"],
