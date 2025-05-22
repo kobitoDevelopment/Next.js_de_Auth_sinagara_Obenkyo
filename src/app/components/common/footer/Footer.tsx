@@ -1,7 +1,9 @@
+import styles from "./Footer.module.css";
+
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="copyright">copyright</div>
+    <footer className={styles.footer}>
+      <small className={styles.copyright}>copyright</small>
     </footer>
   );
 }
