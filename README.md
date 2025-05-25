@@ -11,3 +11,17 @@ host
 └ mypage_supabase_auth(supabase_authを使ってアカウント周りを実装を練習する用)  
   └ edit  
 ```
+
+## 開発環境起動用コマンド
+1. 
+```
+npm install
+```
+```
+npm run dev
+```
+
+## テスト実行用コマンド
+```
+npx jest
+```
