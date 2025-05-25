@@ -2,13 +2,9 @@
 ## サイトマップ
 ```
 host  
-└ signup_scratch(usersテーブルを自作してアカウント周りのDB操作・ロジックを練習する用)  
-└ signup_supabase_auth(supabase_authを使ってアカウント周りを実装を練習する用)  
-└ signin_scratch(usersテーブルを自作してアカウント周りのDB操作・ロジックを練習する用)  
-└ signin_supabase_auth(supabase_authを使ってアカウント周りを実装を練習する用)  
-└ mypage_scratch(usersテーブルを自作してアカウント周りのDB操作・ロジックを練習する用)  
-  └ edit  
-└ mypage_supabase_auth(supabase_authを使ってアカウント周りを実装を練習する用)  
+└ signup_scratch
+└ signin_scratch
+└ mypage 
   └ edit  
 ```
 
@@ -25,3 +21,7 @@ npm run dev
 ```
 npx jest
 ```
+
+## 留意点
+supabase_authが色々やってくれすぎるのでusersテーブルを自作して構築しています。  
+パスワードをハッシュ化してテーブルに保存したいが、フロントエンドでハッシュ化したくないので一旦平文のまま送信しています。(実際にバックエンドのAPIに送信するときはAPI側でハッシュ化するため、フロントエンド練習用をテーマにしたこのリポジトリでは平文のままでいいかぁ〜という心持ち)
