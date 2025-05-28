@@ -23,4 +23,4 @@ npx jest
 ```
 
 ## 留意点
-supabase_authが色々やってくれすぎるのでusersテーブルを自作して構築しています。
+supabase_authが色々やってくれすぎるのでusersテーブルを自作してアカウント周りを構築しています。
