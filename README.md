@@ -2,10 +2,10 @@
 ## サイトマップ
 ```
 host  
-└ signup_scratch
-└ signin_scratch
+└ signup(アカウント登録)
+└ signin(サインイン)
 └ mypage 
-  └ edit  
+  └ edit(アカウント情報編集)
 ```
 
 ## 開発環境起動用コマンド
