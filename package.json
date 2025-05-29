@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "lint:style": "stylelint '**/*.css'",
+    "lint:style:fix": "stylelint '**/*.css' --fix",
     "lint:eslint": "next lint",
     "test": "jest",
-    "check": "npm run lint:eslint && npm run lint:style && npm run test"
+    "check": "npm run lint:eslint && npm run lint:style:fix && npm run test"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.10.0",
