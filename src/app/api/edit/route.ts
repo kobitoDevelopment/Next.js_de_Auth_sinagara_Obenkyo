@@ -1,20 +1,30 @@
-/*
- * クライアント側でパスワードのハッシュ化を行なってしまうと、ハッシュ化されたパスワードがネットワーク上に平文で送信されることになるため
- * サーバー側でパスワードをハッシュ化する。
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
+
+// バリデーションスキーマ（全部必須。newPasswordも必須で空不可）
+const schema = z.object({
+  userId: z.number(),
+  username: z.string().min(1, "usernameは必須です"),
+  email: z.string().email("emailの形式が不正です"),
+  role: z.string().min(1, "roleは必須です"),
+  currentPassword: z.string().min(1, "現在のパスワードは必須です"),
+  newPassword: z.string().min(1, "新しいパスワードは必須です"),
+});
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, username, email, role, currentPassword, newPassword } = body;
 
-    if (!userId || !username || !email || !role || !currentPassword) {
-      return NextResponse.json({ error: "必要な情報が不足しています" }, { status: 400 });
+    // バリデーション
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      // エラー内容を返す
+      return NextResponse.json({ error: parsed.error.errors.map((e) => e.message).join(", ") }, { status: 400 });
     }
+
+    const { userId, username, email, role, currentPassword, newPassword } = parsed.data;
 
     // 現在のパスワードのハッシュをDBから取得
     const { data: userData, error: fetchError } = await supabase.from("users").select("password").eq("id", userId).single();
@@ -29,25 +39,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "現在のパスワードが間違っています" }, { status: 401 });
     }
 
-    // 更新データ準備
-    type UpdateData = {
-      username: string;
-      email: string;
-      role: string;
-      password?: string;
-    };
+    // 新パスワードは必須なので空文字チェック不要。必ずハッシュ化して更新
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    const updateData: UpdateData = {
+    // 更新データ
+    const updateData = {
       username,
       email,
       role,
+      password: hashedPassword,
     };
-
-    // 新パスワードが空でなければハッシュ化して設定
-    if (newPassword && newPassword.trim() !== "") {
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      updateData.password = hashedPassword;
-    }
 
     // DB更新
     const { error: updateError } = await supabase.from("users").update(updateData).eq("id", userId);
