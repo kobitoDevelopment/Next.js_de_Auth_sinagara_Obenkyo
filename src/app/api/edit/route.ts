@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
-// バリデーションスキーマ（全部必須。newPasswordも必須で空不可）
+// バリデーションスキーマ
 const schema = z.object({
   userId: z.number(),
   username: z.string().min(1, "usernameは必須です"),
