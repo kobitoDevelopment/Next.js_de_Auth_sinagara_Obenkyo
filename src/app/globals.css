@@ -156,7 +156,7 @@ body {
     max-width: var(--size-max-width-tb);
   }
 
-  @media (width >= 768px) {
+  @media (width <= 768px) {
     max-width: var(--size-max-width-sp);
   }
 }

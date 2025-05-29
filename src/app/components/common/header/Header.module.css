@@ -15,3 +15,6 @@
   box-shadow: 20px 20px 60px var(--color-green-2), -20px -20px 60px var(--color-green-3);
   color: var(--color-white-1);
 }
+.title {
+  font-size: 32px;
+}
