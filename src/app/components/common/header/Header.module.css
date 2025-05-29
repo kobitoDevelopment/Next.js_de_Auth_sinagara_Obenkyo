@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .header {
   display: flex;
   justify-content: center;
@@ -8,8 +10,8 @@
   font-size: 42px;
   font-weight: 700;
   width: 100%;
-  height: var(--headerHeightPC);
-  background-color: var(--colorGreen1);
-  box-shadow: 20px 20px 60px var(--colorGreen2), -20px -20px 60px var(--colorGreen3);
-  color: var(--colorWhite1);
+  height: var(--header-height-pc);
+  background-color: var(--color-green-1);
+  box-shadow: 20px 20px 60px var(--color-green-2), -20px -20px 60px var(--color-green-3);
+  color: var(--color-white-1);
 }
