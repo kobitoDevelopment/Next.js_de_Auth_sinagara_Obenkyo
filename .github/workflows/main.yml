@@ -1,4 +1,4 @@
-name: Run Jest Tests
+name: Run Jest & Stylelint
 
 on:
   push:
@@ -24,3 +24,6 @@ jobs:
 
       - name: Run Jest tests
         run: npx jest
+
+      - name: Run Stylelint
+        run: npx stylelint "**/*.css"
