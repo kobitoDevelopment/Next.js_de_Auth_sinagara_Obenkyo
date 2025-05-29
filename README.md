@@ -21,6 +21,9 @@ npm run dev
 ```
 npx jest
 ```
+## バックエンド(DB)
+supabase
 
 ## 留意点
-supabase_authが色々やってくれすぎるのでusersテーブルを自作してアカウント周りを構築しています。
+supabase_authが色々やってくれすぎるのでusersテーブルを自作してアカウント周りを構築しています。  
+zodどうにゅうちゅう
