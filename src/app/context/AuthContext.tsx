@@ -25,7 +25,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { User, AuthContextType } from "@/app/types/signin/auth";
 
 // Supabaseのクライアントを作成する関数。これでDBとの通信ができるようになる
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/utils/supabase/supabaseClient";
 
 // Next.jsのルーターを使うためのフック（クライアントサイドでページ遷移を行うため）
 import { useRouter } from "next/navigation";
@@ -65,9 +65,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // 認証情報を読み込み中かどうかを表すstate。trueならまだ処理中
   const [isLoading, setIsLoading] = useState(true);
-
-  // Supabaseのクライアントを作成。これでDBへ問い合わせが可能になる
-  const supabase = createClientComponentClient();
 
   // Next.jsのクライアントサイドルーターを取得（リダイレクトなどに使用）
   const router = useRouter();
