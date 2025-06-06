@@ -1,5 +1,5 @@
 "use client";
-import { AuthProvider } from "@/app/context/AuthContext";
+// import { AuthProvider } from "@/app/context/AuthContext";
 import "./globals.css";
 
 export default function RootLayout({
@@ -10,7 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        {/* route handlerで構築したコード群を使用する場合 */}
+        {/* <AuthProvider>{children}</AuthProvider> */}
+        {/* server componentsで構築したコード群を使用する場合 */}
+        {children}
       </body>
     </html>
   );
