@@ -32,19 +32,18 @@ npx jest
 
 supabase
 
-## 留意点
-### Authまわり
+## Authまわり
 supabase_auth が色々やってくれすぎるので users テーブルを自作してアカウント周りを構築しています。
 
-### 使用していないディレクトリ
+## 使用していないディレクトリ
 DBへのアクセスをroute handler(fetch)で行うかserver actions(form)で行うかを両方試したくて以下のディレクトリを作成しています。
-#### route handler(使用していない)
+### route handler(使用していない)
 signin/
 signup/
 mypage/
 mypage/edit
 
-#### server actions(使用している)
+### server actions(使用している)
 signin2/
 signup2/
 mypage2/
