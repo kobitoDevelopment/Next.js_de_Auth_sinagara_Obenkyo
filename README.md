@@ -33,5 +33,22 @@ npx jest
 supabase
 
 ## 留意点
-
+### Authまわり
 supabase_auth が色々やってくれすぎるので users テーブルを自作してアカウント周りを構築しています。
+
+### 使用していないディレクトリ
+DBへのアクセスをroute handler(fetch)で行うかserver actions(form)で行うかを両方試したくて以下のディレクトリを作成しています。
+#### route handler(使用していない)
+signin/
+signup/
+mypage/
+mypage/edit
+
+#### server actions(使用している)
+signin2/
+signup2/
+mypage2/
+mypage2/edit2/
+
+route handlerを使用する場合はcomponents/layout.tsxでサインイン状態判定+リダイレクトを実施しており、
+server actionsを使用する場合はsrc/middleware.tsでサインイン状態判定+リダイレクトを実施しています。
