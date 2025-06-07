@@ -1,37 +1,49 @@
-/*
-route handlerで作成したsignup/と違い、server actionを使ってsignup処理を作ってみる
-*/
+"use client";
+import React, { useActionState } from "react";
+import { registerUserAction, RegisterResult } from "./actions";
 
-import { registerUser } from "./actions";
+const initialState: RegisterResult = { errors: undefined };
 
-export const metadata = {
-  title: "sign up2",
-  description: "sign up2",
-};
+export default function SignUp2Form() {
+  const [state, formAction] = useActionState(registerUserAction, initialState);
 
-export default function SignUp2() {
   return (
-    <form action={registerUser}>
-      <label>
-        ユーザー名
-        <input type="text" name="username" required />
-      </label>
-      <label>
-        メールアドレス
-        <input type="email" name="email" required />
-      </label>
-      <label>
-        ロール
-        <select name="role" required>
-          <option value="user">user</option>
-          <option value="admin">admin</option>
-        </select>
-      </label>
-      <label>
-        パスワード
-        <input type="password" name="password" required />
-      </label>
+    <form action={formAction}>
+      <div>
+        <label>
+          ユーザー名
+          <input type="text" name="username" required autoComplete="username" />
+        </label>
+      </div>
+      <div>
+        <label>
+          メールアドレス
+          <input type="email" name="email" required autoComplete="email" />
+        </label>
+      </div>
+      <div>
+        <label>
+          ロール
+          <select name="role" required>
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
+          パスワード
+          <input type="password" name="password" required autoComplete="new-password" />
+        </label>
+      </div>
       <button type="submit">登録</button>
+      {state?.errors && (
+        <ul style={{ color: "red", margin: 0, padding: 0, listStyle: "none" }}>
+          {state.errors.map((msg, idx) => (
+            <li key={idx}>{msg}</li>
+          ))}
+        </ul>
+      )}
     </form>
   );
 }

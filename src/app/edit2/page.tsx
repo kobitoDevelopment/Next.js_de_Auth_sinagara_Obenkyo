@@ -1,34 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { updateProfile } from "./actions";
+import { useActionState } from "react";
+import { updateProfileAction, UpdateProfileResult } from "./actions";
 
+const initialState: UpdateProfileResult = { errors: undefined };
+
+/**
+ * プロフィール編集ページ
+ */
 export default function EditProfilePage() {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
-  const handleSubmit = async (formData: FormData) => {
-    setError(null);
-    setSuccess(null);
-
-    try {
-      await updateProfile(formData);
-      setSuccess("プロフィールを更新しました。");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("不明なエラーが発生しました");
-      }
-    }
-  };
+  // useActionStateでサーバーアクションと状態管理
+  const [state, formAction] = useActionState(updateProfileAction, initialState);
 
   return (
     <section>
       <h1>プロフィール編集</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      <form action={handleSubmit}>
+      {/* エラーがあれば全てリストで表示 */}
+      {state?.errors && (
+        <ul style={{ color: "red", margin: 0, padding: 0, listStyle: "none" }}>
+          {state.errors.map((msg, idx) => (
+            <li key={idx}>{msg}</li>
+          ))}
+        </ul>
+      )}
+      {/* 成功時の表示 */}
+      {!state?.errors && state !== initialState && <p style={{ color: "green" }}>プロフィールを更新しました。</p>}
+      <form action={formAction}>
         <label>
           ユーザー名
           <input type="text" name="username" required />
