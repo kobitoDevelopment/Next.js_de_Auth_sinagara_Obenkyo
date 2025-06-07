@@ -37,11 +37,11 @@ supabase_auth が色々やってくれすぎるので users テーブルを自�
 
 ## 使用していないディレクトリ
 DBへのアクセスをroute handler(fetch)で行うかserver actions(form)で行うかを両方試したくて以下のディレクトリを作成しています。
-### route handler(使用していない)
-signin/
-signup/
-mypage/
-mypage/edit
+### route handler(使用していない※接頭辞に_をつけることでデプロイ対象外にできる)
+_signin/
+_signup/
+_mypage/
+_mypage/_edit
 
 ### server actions(使用している)
 signin2/
