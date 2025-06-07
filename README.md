@@ -3,11 +3,11 @@
 ## サイトマップ
 
 ```
-host
-└ signup(アカウント登録)
-└ signin(サインイン)
-└ mypage
-  └ edit(アカウント情報編集)
+root
+└ signup2(アカウント登録)
+└ signin2(サインイン)
+└ mypage2
+  └ edit2(アカウント情報編集)
 ```
 
 ## 開発環境起動用コマンド
