@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useAuth } from "@/app/context/AuthContext";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import styles from "./Form.module.css";
+import { useState } from 'react';
+import { useAuth } from '@/app/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import styles from './Form.module.css';
 
 export default function Form() {
   // フォームの入力状態を管理
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   // AuthContextからsignIn関数を取得（メールアドレスとパスワードで認証処理を実行）
@@ -27,10 +27,10 @@ export default function Form() {
     const success = await signIn(email, password);
 
     if (success) {
-      router.push("/mypage");
+      router.push('/mypage');
     } else {
       // 認証失敗時はエラーメッセージをセットして画面に表示
-      setError("メールアドレスかパスワードが間違っています");
+      setError('メールアドレスかパスワードが間違っています');
     }
   };
 
@@ -45,7 +45,14 @@ export default function Form() {
           </dt>
           <dd className={styles.formItemsDescription}>
             {/* email入力フォーム */}
-            <input className={styles.formItemsInput} id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input
+              className={styles.formItemsInput}
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </dd>
         </div>
         <div className={styles.formItemsRow}>
@@ -56,7 +63,14 @@ export default function Form() {
           </dt>
           <dd className={styles.formItemsDescription}>
             {/* password入力フォーム */}
-            <input className={styles.formItemsInput} id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input
+              className={styles.formItemsInput}
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </dd>
         </div>
 

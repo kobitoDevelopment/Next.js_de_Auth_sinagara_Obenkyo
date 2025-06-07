@@ -18,17 +18,17 @@
  * - setUser(user | null): 手動でユーザー状態を更新（例：プロフィール編集時など）
  * - deleteAccount(): サインイン中のユーザーアカウントを削除する処理
  */
-import bcrypt from "bcryptjs"; // bcryptを使ってパスワードのハッシュ化と照合を行うためにインポート
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import bcrypt from 'bcryptjs'; // bcryptを使ってパスワードのハッシュ化と照合を行うためにインポート
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // ユーザー情報（User型）と、Contextの型（AuthContextType）をインポート
-import { User, AuthContextType } from "@/app/types/signin/auth";
+import { User, AuthContextType } from '@/app/types/signin/auth';
 
 // Supabaseのクライアントを作成する関数。これでDBとの通信ができるようになる
-import { supabase } from "@/app/utils/supabase/supabaseClient";
+import { supabase } from '@/app/utils/supabase/supabaseClient';
 
 // Next.jsのルーターを使うためのフック（クライアントサイドでページ遷移を行うため）
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 // Context（共有データの箱）を作成。
 // `undefined`を初期値にしておき、必ずProvider内で使用されることを強制する
@@ -44,9 +44,9 @@ export const setCookie = (name: string, value: string, days = 7) => {
 
 // Cookieからデータを取得する
 export const getCookie = (name: string): string | null => {
-  const cookies = document.cookie.split("; ");
+  const cookies = document.cookie.split('; ');
   for (const cookie of cookies) {
-    const [key, val] = cookie.split("=");
+    const [key, val] = cookie.split('=');
     if (key === name) return decodeURIComponent(val);
   }
   return null;
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const loadUserFromCookie = () => {
       // Cookieからユーザー情報を取得（存在すれば文字列として返る）
-      const userStr = getCookie("auth_user");
+      const userStr = getCookie('auth_user');
 
       // ユーザー情報があれば、JSONとしてパースしてstateにセット
       if (userStr) {
@@ -81,10 +81,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const parsedUser: User = JSON.parse(userStr);
           setUser(parsedUser); // 正常にパースできればサインイン状態に復元
         } catch (e) {
-          console.error("cookieをParseできませんでした。", e);
+          console.error('cookieをParseできませんでした。', e);
 
           // JSON.parseに失敗した場合（不正な形式など）はCookieを削除して安全に処理する
-          deleteCookie("auth_user");
+          deleteCookie('auth_user');
         }
       }
 
@@ -100,8 +100,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // ローディングが完了していて、かつuserがnullなら未サインイン状態
     if (!isLoading && user === null) {
       // 現在のパスが/signinもしくは/signupでない場合にリダイレクト
-      if (window.location.pathname !== "/signin" && window.location.pathname !== "/signup") {
-        router.push("/signin"); // サインインページへリダイレクト
+      if (window.location.pathname !== '/signin' && window.location.pathname !== '/signup') {
+        router.push('/signin'); // サインインページへリダイレクト
       }
     }
   }, [isLoading, user, router]);
@@ -111,9 +111,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Supabaseの"users"テーブルから、指定されたemailのユーザー情報を取得する
     // 取得するカラムはid, email, username, password（ハッシュ化済み）, role
     const { data, error } = await supabase
-      .from("users")
-      .select("id, email, username, password, role")
-      .eq("email", email) // emailが一致するレコードを検索
+      .from('users')
+      .select('id, email, username, password, role')
+      .eq('email', email) // emailが一致するレコードを検索
       .single(); // 結果は単一のレコードのみを期待
 
     // エラー発生、またはデータが存在しなければ、falseを返してログイン失敗
@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // クッキーにもユーザー情報をJSON文字列として保存し、
     // セッションの維持や認証に使う
-    setCookie("auth_user", JSON.stringify(loggedInUser));
+    setCookie('auth_user', JSON.stringify(loggedInUser));
 
     // ログイン成功を示すtrueを返す
     return true;
@@ -152,16 +152,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Cookieも削除してセッションを無効化する
     // リロードしてもサインイン情報が復元されないようにするために必要
-    deleteCookie("auth_user");
+    deleteCookie('auth_user');
   };
 
   // アカウント削除処理
   const deleteAccount = async () => {
     // Cookie から user 情報を取得
-    const userStr = getCookie("auth_user");
+    const userStr = getCookie('auth_user');
 
     if (!userStr) {
-      console.error("Cookie にユーザー情報が存在しません。");
+      console.error('Cookie にユーザー情報が存在しません。');
       return false;
     }
 
@@ -169,24 +169,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const parsedUser: User = JSON.parse(userStr);
 
       // Supabase でユーザーを削除
-      const { error } = await supabase.from("users").delete().eq("id", parsedUser.id);
+      const { error } = await supabase.from('users').delete().eq('id', parsedUser.id);
 
       if (error) {
-        console.error("アカウント削除に失敗しました:", error);
+        console.error('アカウント削除に失敗しました:', error);
         return false;
       }
 
       // Cookie と認証状態をリセット
-      deleteCookie("auth_user");
+      deleteCookie('auth_user');
       setUser(null);
 
       // アカウント削除後にサインインページへリダイレクトする処理
-      router.push("/signin");
+      router.push('/signin');
 
       return true;
     } catch (e) {
-      console.error("Cookie のパースに失敗しました:", e);
-      deleteCookie("auth_user");
+      console.error('Cookie のパースに失敗しました:', e);
+      deleteCookie('auth_user');
       return false;
     }
   };
@@ -213,7 +213,7 @@ export const useAuth = () => {
   const context = useContext(AuthContext); // Contextから現在の状態を取得
 
   // Contextが未設定（Providerで囲まれていない）場合はエラーを出す
-  if (!context) throw new Error("useAuthを使用する場合はAuthProviderで囲む必要があります。");
+  if (!context) throw new Error('useAuthを使用する場合はAuthProviderで囲む必要があります。');
 
   // 正常なContext情報を返す
   return context;

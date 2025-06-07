@@ -1,18 +1,18 @@
-import { signOut } from "@/app/mypage2/actions";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { signOut } from '@/app/mypage2/actions';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 // --- 外部依存のモック ---
 // cookies()をモック化
-jest.mock("next/headers", () => ({
+jest.mock('next/headers', () => ({
   cookies: jest.fn(),
 }));
 // redirect()をモック化
-jest.mock("next/navigation", () => ({
+jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
-describe("signOut", () => {
+describe('signOut', () => {
   // setメソッドのモック
   const setMock = jest.fn();
 
@@ -24,21 +24,21 @@ describe("signOut", () => {
     });
   });
 
-  it("クッキーを削除しリダイレクトする", async () => {
+  it('クッキーを削除しリダイレクトする', async () => {
     await signOut();
 
     // クッキー削除が正しく呼ばれているかを検証
     expect(setMock).toHaveBeenCalledWith({
-      name: "user_id",
-      value: "",
-      path: "/",
+      name: 'user_id',
+      value: '',
+      path: '/',
       expires: new Date(0),
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
     });
 
     // サインインページへリダイレクトされているか
-    expect(redirect).toHaveBeenCalledWith("/signin2");
+    expect(redirect).toHaveBeenCalledWith('/signin2');
   });
 });

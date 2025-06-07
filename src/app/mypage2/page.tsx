@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { signOut } from "./actions";
-import Link from "next/link";
+import { cookies } from 'next/headers';
+import { signOut } from './actions';
+import Link from 'next/link';
 
 export default async function MyPage() {
   // サーバーコンポーネントなので cookies() で直接ユーザーIDを取得できる
   const cookieStore = await cookies();
-  const userId = cookieStore.get("user_id")?.value || "未ログイン";
+  const userId = cookieStore.get('user_id')?.value || '未ログイン';
 
   return (
     <section>

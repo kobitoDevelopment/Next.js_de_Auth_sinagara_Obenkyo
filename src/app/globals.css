@@ -45,7 +45,7 @@ blockquote::before,
 blockquote::after,
 q::before,
 q::after {
-  content: "";
+  content: '';
   content: none;
 }
 
@@ -76,12 +76,12 @@ textarea {
   border: 1px solid var(--color-black-1);
 }
 
-input[type="radio"],
-input[type="checkbox"] {
+input[type='radio'],
+input[type='checkbox'] {
   appearance: none;
 }
 
-input[type="file"] {
+input[type='file'] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -99,7 +99,9 @@ progress {
 
 html {
   /* font */
-  --font-base: "LINE Seed JP", "Helvetica Neue", arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", meiryo, sans-serif;
+  --font-base:
+    'LINE Seed JP', 'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', meiryo,
+    sans-serif;
 
   /* color */
   --color-white-1: #fff;
@@ -133,7 +135,7 @@ body {
   word-break: normal;
   font-family: var(--font-base);
   font-weight: 400;
-  font-feature-settings: "palt";
+  font-feature-settings: 'palt';
   color: var(--color-black-1);
   background-color: var(--color-green-1);
 }
@@ -165,7 +167,7 @@ body {
   outline: calc(1 / 16 * 1rem) solid var(--color-white-1);
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   position: relative;
   display: inline-block;
   width: 1rem;
@@ -177,7 +179,7 @@ input[type="checkbox"] {
 
   &:checked {
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;
@@ -191,7 +193,7 @@ input[type="checkbox"] {
   }
 }
 
-input[type="radio"] {
+input[type='radio'] {
   position: relative;
   display: inline-block;
   width: 1rem;
@@ -205,7 +207,7 @@ input[type="radio"] {
 
   &:checked {
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;

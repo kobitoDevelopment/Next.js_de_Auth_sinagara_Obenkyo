@@ -15,5 +15,7 @@
   font-weight: 700;
   color: var(--color-white-1);
   background-color: var(--color-green-1);
-  box-shadow: 20px 20px 60px var(--color-green-2), -20px -20px 60px var(--color-green-3);
+  box-shadow:
+    20px 20px 60px var(--color-green-2),
+    -20px -20px 60px var(--color-green-3);
 }

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useActionState } from "react";
-import { signInAction, SignInResult } from "./actions";
+import { useActionState } from 'react';
+import { signInAction, SignInResult } from './actions';
 
 const initialState: SignInResult = { errors: undefined };
 
@@ -12,7 +12,7 @@ export default function SignInPage() {
     <section>
       <h1>サインイン</h1>
       {state?.errors && (
-        <ul style={{ color: "red", margin: 0, padding: 0, listStyle: "none" }}>
+        <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
           {state.errors.map((msg, idx) => (
             <li key={idx}>{msg}</li>
           ))}

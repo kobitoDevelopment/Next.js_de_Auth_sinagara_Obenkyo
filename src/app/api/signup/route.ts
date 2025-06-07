@@ -4,22 +4,22 @@
  */
 
 // zod
-import { z } from "zod";
+import { z } from 'zod';
 // Next.jsのAPIルートでレスポンスを返すためのユーティリティ
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 // Supabaseクライアントをインポート（DB操作に使用）
-import { supabase } from "@/lib/supabase";
+import { supabase } from '@/lib/supabase';
 
 // パスワードを安全に保存するためのハッシュ化ライブラリ
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
 // バリデーションのためのスキーマを定義
 const signupSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  email: z.string().email("Invalid email address"),
-  role: z.string().min(1, "Role is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z.string().min(1, 'Username is required'),
+  email: z.string().email('Invalid email address'),
+  role: z.string().min(1, 'Role is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 // POSTリクエストを受け取ったときに実行される非同期関数
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Supabaseのusersテーブルに新しいユーザーを挿入
-    const { error } = await supabase.from("users").insert([
+    const { error } = await supabase.from('users').insert([
       {
         username, // ユーザー名
         email, // メールアドレス
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     }
 
     // 成功時に200ステータスでメッセージを返す
-    return NextResponse.json({ message: "User registered successfully" }, { status: 200 });
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 200 });
   } catch (error) {
     // 予期せぬエラー（例：ハッシュ化処理やDB接続エラー）が発生した場合の処理
     return NextResponse.json({ error: `Internal Server Error. code:${error}` }, { status: 500 });

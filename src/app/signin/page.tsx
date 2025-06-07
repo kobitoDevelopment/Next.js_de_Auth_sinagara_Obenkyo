@@ -1,10 +1,10 @@
-import Layout from "@/app/components/layouts/Layout";
-import Form from "@/app/components/signin/Form";
-import styles from "./page.module.css";
+import Layout from '@/app/components/layouts/Layout';
+import Form from '@/app/components/signin/Form';
+import styles from './page.module.css';
 
 export const metadata = {
-  title: "sign in",
-  description: "sign in",
+  title: 'sign in',
+  description: 'sign in',
 };
 
 export default function SignIn() {

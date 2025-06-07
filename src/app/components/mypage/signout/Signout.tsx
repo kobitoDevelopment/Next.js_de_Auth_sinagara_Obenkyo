@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
-import styles from "./Signout.module.css";
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/AuthContext';
+import styles from './Signout.module.css';
 
 export default function SignOutButton() {
   const { signOut } = useAuth();
@@ -10,7 +10,7 @@ export default function SignOutButton() {
 
   const handleSignOut = () => {
     signOut(); // useAuthからsignOut関数を呼び出す
-    router.push("/signin"); // サインインページに遷移
+    router.push('/signin'); // サインインページに遷移
   };
 
   return (

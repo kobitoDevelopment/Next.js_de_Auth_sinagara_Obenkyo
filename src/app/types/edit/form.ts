@@ -1,7 +1,7 @@
 export type FormData = {
   username: string;
   email: string;
-  role: "user" | "admin";
+  role: 'user' | 'admin';
   newPassword: string;
   currentPassword: string;
 };

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
-import Header from "@/app/components/common/header/Header";
-import Footer from "@/app/components/common/footer/Footer";
-import styles from "./Layout.module.css";
+import { useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/app/context/AuthContext';
+import Header from '@/app/components/common/header/Header';
+import Footer from '@/app/components/common/footer/Footer';
+import styles from './Layout.module.css';
 
 export default function TestLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === "/signin" || pathname === "/signup";
+  const isAuthPage = pathname === '/signin' || pathname === '/signup';
 
   const isProtectedPage = !isAuthPage;
 
@@ -21,7 +21,7 @@ export default function TestLayout({ children }: { children: React.ReactNode }) 
 
     // 未ログインかつ認証が必要なページにいたらサインインへリダイレクト
     if (!user && isProtectedPage) {
-      router.push("/signin");
+      router.push('/signin');
     }
   }, [user, isLoading, isProtectedPage, router]);
 

@@ -34,7 +34,9 @@
 .formItemsInput {
   border: unset;
   background-color: var(--color-green-1);
-  box-shadow: inset 20px 20px 60px var(--color-green-2), inset -20px -20px 60px var(--color-green-3);
+  box-shadow:
+    inset 20px 20px 60px var(--color-green-2),
+    inset -20px -20px 60px var(--color-green-3);
   width: 100%;
   caret-color: var(--color-white-1);
   padding: 4px;
@@ -44,7 +46,9 @@
 .formItemsSelect {
   border: unset;
   background-color: var(--color-green-1);
-  box-shadow: inset 20px 20px 60px var(--color-green-2), inset -20px -20px 60px var(--color-green-3);
+  box-shadow:
+    inset 20px 20px 60px var(--color-green-2),
+    inset -20px -20px 60px var(--color-green-3);
   width: 100%;
   color: var(--color-white-1);
   padding: 4px;
@@ -58,7 +62,9 @@
 
 .submitButton {
   background: linear-gradient(145deg, var(--color-green-4), var(--color-green-5));
-  box-shadow: 20px 20px 60px var(--color-green-2), -20px -20px 60px var(--color-green-3);
+  box-shadow:
+    20px 20px 60px var(--color-green-2),
+    -20px -20px 60px var(--color-green-3);
   padding: 16px 64px;
   margin-inline: auto;
   display: block;
@@ -75,7 +81,9 @@
 
   @media (any-hover: hover) {
     &:hover {
-      box-shadow: 0 0 0 var(--color-green-3), 0 0 0 var(--color-green-2);
+      box-shadow:
+        0 0 0 var(--color-green-3),
+        0 0 0 var(--color-green-2);
       transition: box-shadow 0.1s ease-in-out;
     }
   }

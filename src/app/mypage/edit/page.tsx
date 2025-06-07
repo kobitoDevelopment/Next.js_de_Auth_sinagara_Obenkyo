@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Layout from "@/app/components/layouts/Layout";
-import Form from "@/app/components/mypage/edit/Form";
-import styles from "./page.module.css";
+import Layout from '@/app/components/layouts/Layout';
+import Form from '@/app/components/mypage/edit/Form';
+import styles from './page.module.css';
 
 export default function MyPage() {
   return (

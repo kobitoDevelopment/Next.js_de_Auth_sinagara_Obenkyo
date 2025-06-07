@@ -1,49 +1,54 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { FormData, FormErrors } from "@/app/types/signup/form"; // フォームデータとエラーの型定義をインポート
-import { validateEmail, validateUsername, validateRole, validatePassword } from "@/app/utils/form/validation"; // 入力バリデーション関数をインポート
-import { useRouter } from "next/navigation"; // リダイレクト用のフックをインポート
-import styles from "./Form.module.css";
+import { useState } from 'react';
+import { FormData, FormErrors } from '@/app/types/signup/form'; // フォームデータとエラーの型定義をインポート
+import {
+  validateEmail,
+  validateUsername,
+  validateRole,
+  validatePassword,
+} from '@/app/utils/form/validation'; // 入力バリデーション関数をインポート
+import { useRouter } from 'next/navigation'; // リダイレクト用のフックをインポート
+import styles from './Form.module.css';
 
 export default function Form() {
   const router = useRouter();
   // 入力データの状態（初期値は空）
   const [formData, setFormData] = useState<FormData>({
-    username: "",
-    email: "",
-    role: "user", // 初期ロールをuserに設定
-    password: "",
+    username: '',
+    email: '',
+    role: 'user', // 初期ロールをuserに設定
+    password: '',
   });
 
   // バリデーションエラーを保存する状態（空文字列が「エラーなし」の意味）
   const [errors, setErrors] = useState<FormErrors>({
-    username: "",
-    email: "",
-    role: "",
-    password: "",
+    username: '',
+    email: '',
+    role: '',
+    password: '',
   });
 
   // 登録結果などのメッセージを表示するための状態
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   /**
    * name に応じて適切なバリデーション関数を実行する
    */
   const validate = function (name: string, value: string): string {
-    if (name === "username") {
+    if (name === 'username') {
       return validateUsername(value);
     }
-    if (name === "email") {
+    if (name === 'email') {
       return validateEmail(value);
     }
-    if (name === "role") {
+    if (name === 'role') {
       return validateRole(value);
     }
-    if (name === "password") {
+    if (name === 'password') {
       return validatePassword(value);
     }
-    return "";
+    return '';
   };
 
   /**
@@ -75,10 +80,10 @@ export default function Form() {
     e.preventDefault();
 
     // 各項目を手動でバリデーション
-    const usernameError = validate("username", formData.username);
-    const emailError = validate("email", formData.email);
-    const roleError = validate("role", formData.role);
-    const passwordError = validate("password", formData.password);
+    const usernameError = validate('username', formData.username);
+    const emailError = validate('email', formData.email);
+    const roleError = validate('role', formData.role);
+    const passwordError = validate('password', formData.password);
 
     // エラー状態を更新
     setErrors({
@@ -89,30 +94,30 @@ export default function Form() {
     });
 
     if (usernameError || emailError || roleError || passwordError) {
-      setMessage("入力に誤りがあります。");
+      setMessage('入力に誤りがあります。');
       return;
     }
 
     try {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage(`エラー: ${data.error || "登録に失敗しました"}`);
+        setMessage(`エラー: ${data.error || '登録に失敗しました'}`);
       } else {
-        setMessage("succeeded");
+        setMessage('succeeded');
 
         // フォーム初期化
-        setFormData({ username: "", email: "", role: "user", password: "" });
-        setErrors({ username: "", email: "", role: "", password: "" });
+        setFormData({ username: '', email: '', role: 'user', password: '' });
+        setErrors({ username: '', email: '', role: '', password: '' });
 
         setTimeout(() => {
-          router.push("/signin");
+          router.push('/signin');
         }, 3000);
       }
     } catch (error) {
@@ -131,7 +136,14 @@ export default function Form() {
             </label>
           </dt>
           <dd className={styles.formItemsDescription}>
-            <input className={styles.formItemsInput} id="username" type="text" name="username" value={formData.username} onChange={handleChange} />
+            <input
+              className={styles.formItemsInput}
+              id="username"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+            />
             {errors.username && <strong className={styles.error}>{errors.username}</strong>}
           </dd>
         </div>
@@ -144,7 +156,14 @@ export default function Form() {
             </label>
           </dt>
           <dd className={styles.formItemsDescription}>
-            <input className={styles.formItemsInput} id="email" type="email" name="email" value={formData.email} onChange={handleChange} />
+            <input
+              className={styles.formItemsInput}
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
             {errors.email && <strong className={styles.error}>{errors.email}</strong>}
           </dd>
         </div>
@@ -157,7 +176,13 @@ export default function Form() {
             </label>
           </dt>
           <dd className={styles.formItemsDescription}>
-            <select id="role" className={styles.formItemsSelect} name="role" value={formData.role} onChange={handleChange}>
+            <select
+              id="role"
+              className={styles.formItemsSelect}
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
               <option value="user">user</option>
               <option value="admin">admin</option>
             </select>
@@ -173,7 +198,15 @@ export default function Form() {
             </label>
           </dt>
           <dd className={styles.formItemsDescription}>
-            <input className={styles.formItemsInput} id="password" type="password" name="password" value={formData.password} onChange={handleChange} autoComplete="new-password" />
+            <input
+              className={styles.formItemsInput}
+              id="password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+            />
             {errors.password && <strong className={styles.error}>{errors.password}</strong>}
           </dd>
         </div>

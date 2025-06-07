@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useAuth } from "@/app/context/AuthContext";
-import styles from "./Information.module.css";
+import { useAuth } from '@/app/context/AuthContext';
+import styles from './Information.module.css';
 
 export default function MyPage() {
   const { user } = useAuth(); // AuthContextからuser情報を取得

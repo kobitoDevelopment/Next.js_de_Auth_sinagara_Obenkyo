@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Layout from "@/app/components/layouts/Layout";
-import Information from "@/app/components/mypage/information/Information";
-import Signout from "@/app/components/mypage/signout/Signout";
-import Delete from "@/app/components/mypage/delete/Delete";
-import Link from "next/link";
-import styles from "./page.module.css";
+import Layout from '@/app/components/layouts/Layout';
+import Information from '@/app/components/mypage/information/Information';
+import Signout from '@/app/components/mypage/signout/Signout';
+import Delete from '@/app/components/mypage/delete/Delete';
+import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function MyPage() {
   return (

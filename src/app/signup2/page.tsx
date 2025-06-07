@@ -1,6 +1,6 @@
-"use client";
-import React, { useActionState } from "react";
-import { registerUserAction, RegisterResult } from "./actions";
+'use client';
+import React, { useActionState } from 'react';
+import { registerUserAction, RegisterResult } from './actions';
 
 const initialState: RegisterResult = { errors: undefined };
 
@@ -38,7 +38,7 @@ export default function SignUp2Form() {
       </div>
       <button type="submit">登録</button>
       {state?.errors && (
-        <ul style={{ color: "red", margin: 0, padding: 0, listStyle: "none" }}>
+        <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
           {state.errors.map((msg, idx) => (
             <li key={idx}>{msg}</li>
           ))}

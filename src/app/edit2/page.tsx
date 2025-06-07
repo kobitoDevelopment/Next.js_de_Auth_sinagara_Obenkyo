@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useActionState } from "react";
-import { updateProfileAction, UpdateProfileResult } from "./actions";
+import { useActionState } from 'react';
+import { updateProfileAction, UpdateProfileResult } from './actions';
 
 const initialState: UpdateProfileResult = { errors: undefined };
 
@@ -17,14 +17,16 @@ export default function EditProfilePage() {
       <h1>プロフィール編集</h1>
       {/* エラーがあれば全てリストで表示 */}
       {state?.errors && (
-        <ul style={{ color: "red", margin: 0, padding: 0, listStyle: "none" }}>
+        <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
           {state.errors.map((msg, idx) => (
             <li key={idx}>{msg}</li>
           ))}
         </ul>
       )}
       {/* 成功時の表示 */}
-      {!state?.errors && state !== initialState && <p style={{ color: "green" }}>プロフィールを更新しました。</p>}
+      {!state?.errors && state !== initialState && (
+        <p style={{ color: 'green' }}>プロフィールを更新しました。</p>
+      )}
       <form action={formAction}>
         <label>
           ユーザー名

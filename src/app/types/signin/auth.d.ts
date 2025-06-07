@@ -2,7 +2,7 @@ export type User = {
   id: string;
   email: string;
   username: string;
-  role: "admin" | "user";
+  role: 'admin' | 'user';
 };
 
 export type AuthContextType = {
