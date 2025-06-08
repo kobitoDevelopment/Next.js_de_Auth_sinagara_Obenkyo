@@ -1,4 +1,4 @@
-import { registerUser } from '@/app/signup2/actions';
+import { registerUser } from '@/app/components/signup2/actions';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';

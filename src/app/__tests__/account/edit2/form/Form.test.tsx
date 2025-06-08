@@ -1,4 +1,4 @@
-import { updateProfile } from '@/app/mypage2/edit2/actions';
+import { updateProfile } from '@/app/components/mypage2/edit2/actions';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';

@@ -1,4 +1,4 @@
-import { signIn } from '@/app/signin2/actions';
+import { signIn } from '@/app/components/signin2/actions';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
