@@ -1,4 +1,4 @@
-import { signOut } from '@/app/components/mypage2/actions';
+import { signOut } from '@/app/components/mypage2/signout2/actions';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
