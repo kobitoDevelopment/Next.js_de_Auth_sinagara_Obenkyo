@@ -342,16 +342,17 @@ describe('updateProfile', () => {
 
   it('型エラー: フォーム値がstring以外の場合、フォームの入力が不正です', async () => {
     const formData = {
-      get: (key: string) =>
-        key === 'username'
-          ? 123
-          : key === 'email'
-            ? 'mail@example.com'
-            : key === 'current_password'
-              ? ''
-              : key === 'new_password'
-                ? ''
-                : null,
+      get: (key: string) => {
+        if (key === 'username') {
+          return 123; // 数値を返して型エラーを発生させる
+        } else if (key === 'email') {
+          return 'mail@example.com';
+        } else if (key === 'current_password' || key === 'new_password') {
+          return '';
+        } else {
+          return null;
+        }
+      },
     } as unknown as FormData;
 
     const result = await updateProfile(formData);
