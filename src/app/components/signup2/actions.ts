@@ -20,16 +20,10 @@ const RegisterSchema = z.object({
 
 // --- 戻り値型: エラーがあれば配列で返す、正常時はvoidでリダイレクト ---
 export type RegisterResult = { errors?: string[] } | void;
-
-/**
- * ユーザー登録処理
- * @param formData - フォーム送信データ
- * @returns エラー配列 or 正常時はvoid
- */
+// --- ユーザー登録処理のメイン関数 ---
 export async function registerUser(formData: FormData): Promise<RegisterResult> {
   // --- Supabaseクライアントを関数内で生成 ---
   // ・テスト時のモック差し替えのためグローバルではなくlocal生成
-  // ・本番でも都度生成で十分高速・安全
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

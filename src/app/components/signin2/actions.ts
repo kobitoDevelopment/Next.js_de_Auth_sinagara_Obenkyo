@@ -20,17 +20,11 @@ const signInSchema = z.object({
   password: z.string().min(6, { message: 'パスワードは6文字以上で入力してください' }),
 });
 
-/**
- * サインイン処理本体
- * @param formData - フォームから送られてきたデータ
- * @returns エラーがあれば { errors: string[] } を返す。正常時はvoid（リダイレクトする）。
- */
 export async function signIn(formData: FormData): Promise<SignInResult> {
   // --- ここでsupabaseクライアントを生成する理由 ---
   // ・グローバルで1回だけ生成すると、テストのjest.mockで差し替えが効かず、テストでTypeErrorになるため
   // ・この関数内で都度生成すれば、実行ごとにモックを差し込める（テストしやすい）
   // ・また、リクエスト/レスポンスごとに状態を切り分けやすくなる
-  // ※ 本番運用でも十分高速。コネクションプール等は内部で最適化されている
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

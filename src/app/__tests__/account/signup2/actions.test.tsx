@@ -4,26 +4,21 @@ import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 
 // --- 外部モジュールのモック定義 ---
-// Supabaseクライアントをテスト用にモック化
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
 }));
-// パスワードハッシュ化関数もモック
 jest.mock('bcryptjs', () => ({
   hash: jest.fn(),
 }));
-// redirect関数もモック
 jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
 // --- Supabaseのメソッドチェーン用モック ---
-// select().eq()のチェーン、insert()用
-const mockSelect = jest.fn(); // .select()
-const mockEq = jest.fn(); // .eq()
-const mockInsert = jest.fn(); // .insert()
+const mockSelect = jest.fn();
+const mockEq = jest.fn();
+const mockInsert = jest.fn();
 
-// from()のテーブル分岐も再現（usersテーブル以外は空オブジェクト）
 const mockFrom = jest.fn((table: string) => {
   if (table === 'users') {
     return {
@@ -34,44 +29,33 @@ const mockFrom = jest.fn((table: string) => {
   return {};
 });
 
-// Supabaseクライアントの返り値
 const mockSupabase = { from: mockFrom };
 
 // --- 各テスト前にモックを初期化 ---
-// これによりテスト間で状態が混ざらなくなる
 beforeEach(() => {
   jest.clearAllMocks();
-  // createClient呼び出し時にmockSupabaseを返す
   (createClient as jest.Mock).mockReturnValue(mockSupabase);
-  // select().eq()チェーンのセットアップ
   mockSelect.mockReturnValue({ eq: mockEq });
-  // insertやeqの呼び出し履歴もリセット
   mockInsert.mockReset();
   mockEq.mockReset();
 });
 
 // --- FormDataを疑似的に作るユーティリティ関数 ---
-// オブジェクトの値をget()で取得できるようにする
-function makeFormData(data: { [k: string]: string }) {
+function makeFormData(data: { [k: string]: string | number | null }) {
   return {
     get: (key: string) => data[key] ?? null,
   } as unknown as FormData;
 }
 
 // --- registerUser関数のテスト ---
-// 各シナリオごとに個別のケースを検証
 describe('registerUser', () => {
-  it('正常なデータでユーザー登録しリダイレクトされる', async () => {
-    // パスワードハッシュ化を正常値で返す
+  it('正常系：ユーザー登録成功時にリダイレクトされる', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
-    // メール・ユーザー名重複なし（DB検索も空配列で返す）
     mockEq
-      .mockResolvedValueOnce({ data: [], error: null }) // email
-      .mockResolvedValueOnce({ data: [], error: null }); // username
-    // insert時もエラーなし
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
     mockInsert.mockResolvedValue({ error: null });
 
-    // 正常なフォームデータ
     const formData = makeFormData({
       username: 'kobito',
       email: 'test@example.com',
@@ -81,9 +65,7 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // パスワードハッシュ化が正しく呼ばれる
     expect(bcrypt.hash).toHaveBeenCalledWith('secret123', 10);
-    // insert時にハッシュ済みパスワードとともに呼ばれる
     expect(mockInsert).toHaveBeenCalledWith([
       {
         username: 'kobito',
@@ -92,24 +74,20 @@ describe('registerUser', () => {
         password: 'hashedpass',
       },
     ]);
-    // 正常時はリダイレクトされる
     expect(redirect).toHaveBeenCalledWith('/signin2');
-    // エラーなし
     expect(result).toBeUndefined();
   });
 
   it('バリデーションエラーが全て返される', async () => {
-    // バリデーションNGのフォームデータ
     const formData = makeFormData({
-      username: '', // 必須
-      email: 'bademail', // 不正
+      username: '',
+      email: 'bademail',
       role: '',
       password: '1',
     });
 
     const result = await registerUser(formData);
 
-    // すべてのバリデーションエラーが配列で返る
     expect(result).toEqual({
       errors: expect.arrayContaining([
         'ユーザー名は必須です',
@@ -118,7 +96,6 @@ describe('registerUser', () => {
         'パスワードは6文字以上で入力してください',
       ]),
     });
-    // ハッシュ化もinsertもリダイレクトも呼ばれない
     expect(bcrypt.hash).not.toHaveBeenCalled();
     expect(mockInsert).not.toHaveBeenCalled();
     expect(redirect).not.toHaveBeenCalled();
@@ -126,10 +103,9 @@ describe('registerUser', () => {
 
   it('メールアドレスが重複している場合、エラーが返る', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
-    // emailだけ重複（DB検索で1件ヒット）
     mockEq
-      .mockResolvedValueOnce({ data: [{ id: 1 }], error: null }) // email
-      .mockResolvedValueOnce({ data: [], error: null }); // username
+      .mockResolvedValueOnce({ data: [{ id: 1 }], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
 
     const formData = makeFormData({
       username: 'kobito',
@@ -140,7 +116,6 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // メールアドレス重複エラーのみ返す
     expect(result).toEqual({
       errors: ['このメールアドレスは既に登録されています'],
     });
@@ -150,10 +125,9 @@ describe('registerUser', () => {
 
   it('ユーザー名が重複している場合、エラーが返る', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
-    // usernameだけ重複
     mockEq
-      .mockResolvedValueOnce({ data: [], error: null }) // email
-      .mockResolvedValueOnce({ data: [{ id: 2 }], error: null }); // username
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [{ id: 2 }], error: null });
 
     const formData = makeFormData({
       username: 'kobito',
@@ -164,7 +138,6 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // ユーザー名重複のエラーのみ返す
     expect(result).toEqual({
       errors: ['このユーザー名は既に登録されています'],
     });
@@ -174,10 +147,9 @@ describe('registerUser', () => {
 
   it('メールアドレスもユーザー名も重複している場合、両方のエラーが返る', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
-    // 両方重複
     mockEq
-      .mockResolvedValueOnce({ data: [{ id: 1 }], error: null }) // email
-      .mockResolvedValueOnce({ data: [{ id: 2 }], error: null }); // username
+      .mockResolvedValueOnce({ data: [{ id: 1 }], error: null })
+      .mockResolvedValueOnce({ data: [{ id: 2 }], error: null });
 
     const formData = makeFormData({
       username: 'kobito',
@@ -188,7 +160,6 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // 両方の重複エラーが配列で返る
     expect(result).toEqual({
       errors: expect.arrayContaining([
         'このメールアドレスは既に登録されています',
@@ -200,7 +171,6 @@ describe('registerUser', () => {
   });
 
   it('パスワードが短い場合、エラーが返る', async () => {
-    // パスワード長不正
     const formData = makeFormData({
       username: 'kobito',
       email: 'test@example.com',
@@ -210,7 +180,6 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // パスワード長エラーのみ返す
     expect(result).toEqual({
       errors: expect.arrayContaining(['パスワードは6文字以上で入力してください']),
     });
@@ -221,11 +190,9 @@ describe('registerUser', () => {
 
   it('Supabase insertでエラーが返れば、その旨のエラーが返る', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
-    // 重複なし
     mockEq
-      .mockResolvedValueOnce({ data: [], error: null }) // email
-      .mockResolvedValueOnce({ data: [], error: null }); // username
-    // insertでエラー発生
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
     mockInsert.mockResolvedValue({ error: { message: 'fail' } });
 
     const formData = makeFormData({
@@ -237,10 +204,124 @@ describe('registerUser', () => {
 
     const result = await registerUser(formData);
 
-    // insert失敗時のエラー
     expect(result).toEqual({
       errors: ['ユーザー登録に失敗しました'],
     });
     expect(redirect).not.toHaveBeenCalled();
+  });
+
+  // --- 追加テストケース ---
+
+  it('型エラー: フォーム値がstring以外の場合は処理を継続する', async () => {
+    // データ型がおかしいフォームデータ（数値型）
+    const formData = makeFormData({
+      username: 123, // 数値を入れてみる
+      email: 'test@example.com',
+      role: 'user',
+      password: 'password123',
+    });
+
+    // モックの準備
+    (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
+    mockEq
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
+    mockInsert.mockResolvedValue({ error: null });
+
+    // 実行
+    await registerUser(formData);
+
+    // string化されて正常に処理されていることを確認
+    expect(mockInsert).toHaveBeenCalledWith([
+      {
+        username: '123', // 文字列に変換されている
+        email: 'test@example.com',
+        role: 'user',
+        password: 'hashedpass',
+      },
+    ]);
+  });
+
+  it('DB問い合わせでエラーが発生した場合（メール重複チェック時）', async () => {
+    // DB問い合わせでエラー
+    mockEq.mockResolvedValueOnce({
+      data: null,
+      error: { message: 'DB接続エラー' },
+    });
+    mockEq.mockResolvedValueOnce({
+      data: [],
+      error: null,
+    });
+
+    // ここが抜けていた：insertのモックも設定する必要がある
+    mockInsert.mockResolvedValue({ error: null });
+
+    // ハッシュ化のモック
+    (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
+
+    const formData = makeFormData({
+      username: 'kobito',
+      email: 'test@example.com',
+      role: 'user',
+      password: 'secret123',
+    });
+
+    // 実行
+    await registerUser(formData);
+
+    // DBエラーでもvalidationは行われ、モックが設定されていればinsert処理は試みられる
+    expect(mockInsert).toHaveBeenCalled();
+  });
+
+  it('bcrypt.hashでエラーが発生した場合は挿入処理は行われない', async () => {
+    mockEq
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
+
+    // ハッシュ化でエラー
+    (bcrypt.hash as jest.Mock).mockRejectedValue(new Error('ハッシュ化エラー'));
+
+    const formData = makeFormData({
+      username: 'kobito',
+      email: 'test@example.com',
+      role: 'user',
+      password: 'secret123',
+    });
+
+    // 実行すると例外が発生（ハンドリングがなければ）
+    try {
+      await registerUser(formData);
+      // 例外が発生しなかった場合はテスト失敗
+      expect(true).toBe(false);
+    } catch (error) {
+      // 例外が発生することを確認
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).message).toBe('ハッシュ化エラー');
+    }
+
+    // 挿入処理は行われない
+    expect(mockInsert).not.toHaveBeenCalled();
+  });
+
+  it('空のフォームデータが渡された場合でもクラッシュせずエラーを返す', async () => {
+    // 全ての値がnull
+    const formData = makeFormData({
+      username: null,
+      email: null,
+      role: null,
+      password: null,
+    });
+
+    const result = await registerUser(formData);
+
+    // バリデーションエラーが返る
+    expect(result).toEqual({
+      errors: expect.arrayContaining([
+        'ユーザー名は必須です',
+        'メールアドレスの形式が正しくありません',
+        'ロールは必須です',
+        'パスワードは6文字以上で入力してください',
+      ]),
+    });
   });
 });
