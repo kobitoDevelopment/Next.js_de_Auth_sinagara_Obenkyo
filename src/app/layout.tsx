@@ -1,6 +1,7 @@
-// 'use client' ディレクティブを削除
+// "use client"; //route handlerで構築したコード群を使用する場合
 import './globals.css';
 import { DotGothic16 } from 'next/font/google';
+// import AuthProvider from '@/app/components/auth/AuthProvider'; // route handlerで構築したコード群を使用する場合
 
 // google fontsの読み込み - exportを削除
 const dotGothic = DotGothic16({
