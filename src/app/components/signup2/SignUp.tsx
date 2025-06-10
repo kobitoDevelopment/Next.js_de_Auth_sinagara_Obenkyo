@@ -1,6 +1,7 @@
 'use client';
 import React, { useActionState } from 'react';
 import { registerUserAction, RegisterResult } from './actions';
+import styles from './SignUp.module.css';
 
 const initialState: RegisterResult = { errors: undefined };
 
@@ -8,42 +9,78 @@ export default function SignUp2Form() {
   const [state, formAction] = useActionState(registerUserAction, initialState);
 
   return (
-    <form action={formAction}>
-      <div>
-        <label>
-          ユーザー名
-          <input type="text" name="username" required autoComplete="username" />
-        </label>
-      </div>
-      <div>
-        <label>
-          メールアドレス
-          <input type="email" name="email" required autoComplete="email" />
-        </label>
-      </div>
-      <div>
-        <label>
-          ロール
-          <select name="role" required>
-            <option value="user">user</option>
-            <option value="admin">admin</option>
-          </select>
-        </label>
-      </div>
-      <div>
-        <label>
-          パスワード
-          <input type="password" name="password" required autoComplete="new-password" />
-        </label>
-      </div>
-      <button type="submit">登録</button>
-      {state?.errors && (
-        <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
-          {state.errors.map((msg, idx) => (
-            <li key={idx}>{msg}</li>
-          ))}
-        </ul>
-      )}
-    </form>
+    <section className={styles.container}>
+      <form action={formAction} className={styles.form}>
+        <h1 className={styles.title}>サインアップ</h1>
+        <dl className={styles.box}>
+          <div className={styles.line}>
+            <dt className={styles.term}>
+              <label htmlFor="username">ユーザー名</label>
+            </dt>
+            <dd className={styles.description}>
+              <input
+                id="username"
+                type="text"
+                name="username"
+                required
+                autoComplete="username"
+                className={styles.input}
+              />
+            </dd>
+          </div>
+          <div className={styles.line}>
+            <dt className={styles.term}>
+              <label htmlFor="email">メールアドレス</label>
+            </dt>
+            <dd className={styles.description}>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                required
+                autoComplete="email"
+                className={styles.input}
+              />
+            </dd>
+          </div>
+          <div className={styles.line}>
+            <dt className={styles.term}>
+              <label htmlFor="role">ロール</label>
+            </dt>
+            <dd className={styles.description}>
+              <select id="role" name="role" className={styles.select} required>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+            </dd>
+          </div>
+          <div className={styles.line}>
+            <dt className={styles.term}>
+              <label htmlFor="password">パスワード</label>
+            </dt>
+            <dd className={styles.description}>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                required
+                autoComplete="new-password"
+                className={styles.input}
+              />
+            </dd>
+          </div>
+        </dl>
+        <button type="submit" className={styles.button}>
+          登録
+        </button>
+        {state?.errors && (
+          <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
+            {state.errors.map((msg, idx) => (
+              <li key={idx}>{msg}</li>
+            ))}
+          </ul>
+        )}
+      </form>
+    </section>
   );
 }

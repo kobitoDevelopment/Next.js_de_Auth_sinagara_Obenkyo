@@ -1,3 +1,6 @@
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
 /* Normalize */
 * {
   margin: 0;
@@ -29,6 +32,10 @@ menu,
 nav,
 section {
   display: block;
+}
+
+i {
+  font-style: normal;
 }
 
 ol,
@@ -105,7 +112,11 @@ html {
 
   /* color */
   --color-white-1: #fff;
+  --color-white-2: #e0e0e0;
+  --color-white-3: #f0f0f0;
   --color-gray-1: #e8e8e8;
+  --color-gray-2: #bebebe;
+  --color-gray-3: #cacaca;
   --color-black-1: #000;
   --color-green-1: #0c8858;
   --color-green-2: #0a744b;
@@ -120,6 +131,9 @@ html {
   --header-height-pc: 80px;
   --header-height-tb: 50px;
   --header-height-sp: 50px;
+
+  /* fonts */
+  --font-primary: 'DotGothic16', sans-serif;
 
   /* 離散値のアニメーションを許可 */
   interpolate-size: allow-keywords;
@@ -137,7 +151,7 @@ body {
   font-weight: 400;
   font-feature-settings: 'palt';
   color: var(--color-black-1);
-  background-color: var(--color-green-1);
+  background-color: var(--color-white-2);
 }
 
 @media all and (-ms-high-contrast: none) {

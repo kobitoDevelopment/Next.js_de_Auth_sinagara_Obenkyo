@@ -1,6 +1,15 @@
 'use client';
 // import { AuthProvider } from "@/app/context/AuthContext";
 import './globals.css';
+import { DotGothic16 } from 'next/font/google';
+
+// google fontsの読み込み
+export const dotGothic = DotGothic16({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-dotgothic', // フォント変数名を定義
+});
 
 export default function RootLayout({
   children,
@@ -8,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ja" className={dotGothic.variable}>
       <body>
         {/* route handlerで構築したコード群を使用する場合 */}
         {/* <AuthProvider>{children}</AuthProvider> */}

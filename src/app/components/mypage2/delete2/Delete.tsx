@@ -4,6 +4,7 @@
 import { useState } from 'react'; // 状態管理のためのReactフック
 import { useRouter } from 'next/navigation'; // ページ間のナビゲーション（リダイレクト）のためのNext.jsフック
 import { deleteAccountAction } from './actions'; // サーバーアクションをインポート（サーバー側で実行される関数）
+import styles from './Delete.module.css';
 
 // DeleteAccountコンポーネントの定義 - アカウント削除機能を提供するUIコンポーネント
 export default function DeleteAccount() {
@@ -66,7 +67,7 @@ export default function DeleteAccount() {
 
       {/* 削除ボタン - クリック時にhandleDelete関数を実行 */}
       {/* isDeleting状態に基づいてボタンを無効化し、テキストを変更 */}
-      <button onClick={handleDelete} disabled={isDeleting}>
+      <button onClick={handleDelete} disabled={isDeleting} className={styles.button}>
         {/* 三項演算子を使用して、削除中かどうかでボタンのテキストを切り替え */}
         {isDeleting ? 'アカウント削除中...' : 'アカウントを削除する'}
       </button>
