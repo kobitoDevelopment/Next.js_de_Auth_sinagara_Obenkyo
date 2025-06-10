@@ -27,6 +27,10 @@ npm run dev
 ```
 npx jest
 ```
+## 各種Lintなど実行
+```
+npm run check
+```
 
 ## バックエンド(DB)
 
