@@ -1,4 +1,3 @@
-'use client';
 // import { AuthProvider } from "@/app/context/AuthContext";
 import './globals.css';
 import { DotGothic16 } from 'next/font/google';
