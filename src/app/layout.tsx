@@ -1,9 +1,9 @@
-// import { AuthProvider } from "@/app/context/AuthContext";
+// 'use client' ディレクティブを削除
 import './globals.css';
 import { DotGothic16 } from 'next/font/google';
 
-// google fontsの読み込み
-export const dotGothic = DotGothic16({
+// google fontsの読み込み - exportを削除
+const dotGothic = DotGothic16({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
