@@ -1,10 +1,12 @@
 @charset "UTF-8";
+
 .container {
   width: 100%;
   min-height: 100vh;
   padding-top: 120px;
   padding-bottom: 120px;
 }
+
 .inner {
   width: 94%;
   max-width: 840px;
@@ -16,6 +18,7 @@
     inset 5px 5px 10px var(--color-gray-2),
     inset -5px -5px 10px var(--color-white-1);
 }
+
 .title {
   font-size: 24px;
   text-align: center;
@@ -23,6 +26,7 @@
   margin-bottom: 24px;
   font-family: var(--font-dotgothic);
 }
+
 .box {
   display: flex;
   flex-direction: column;
@@ -34,14 +38,17 @@
     inset 5px 5px 10px var(--color-gray-2),
     inset -5px -5px 10px var(--color-white-1);
 }
+
 .line {
   display: flex;
   align-items: center;
 }
+
 .term {
   width: 220px;
   font-family: var(--font-dotgothic);
 }
+
 .description {
   width: 100%;
 }
