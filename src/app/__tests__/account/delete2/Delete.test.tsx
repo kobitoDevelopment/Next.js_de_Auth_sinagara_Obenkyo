@@ -5,11 +5,12 @@ import DeleteAccount from '@/app/components/mypage2/delete2/Delete';
 import { deleteAccountAction } from '@/app/components/mypage2/delete2/actions';
 import { useRouter } from 'next/navigation';
 
-// 外部依存のモック
+// モックの設定
 jest.mock('@/app/components/mypage2/delete2/actions', () => ({
   deleteAccountAction: jest.fn(),
 }));
 
+// useRouterのモック
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
@@ -17,6 +18,7 @@ jest.mock('next/navigation', () => ({
 // window.confirmのモック
 global.confirm = jest.fn();
 
+// テストスイートの開始
 describe('DeleteAccount', () => {
   // 各テスト前の準備
   beforeEach(() => {

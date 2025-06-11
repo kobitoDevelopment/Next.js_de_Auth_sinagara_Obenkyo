@@ -4,19 +4,22 @@ import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// 外部依存のモック化
+// supabase-jsとbcryptjsのモックを設定
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
 }));
 
+// bcryptjsのcompare関数をモック
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(),
 }));
 
+// next/headersとnext/navigationのモックを設定
 jest.mock('next/headers', () => ({
   cookies: jest.fn(),
 }));
 
+// next/navigationのredirect関数をモック
 jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));

@@ -3,21 +3,23 @@ import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
-// --- 外部依存のモック ---
+// Supabaseクライアントのモック
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
 }));
 
+// bcryptのモック
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(),
   hash: jest.fn(),
 }));
 
+// next/headersのcookiesモック
 jest.mock('next/headers', () => ({
   cookies: jest.fn(),
 }));
 
-// --- Supabaseクエリチェーン用のモック ---
+// Supabaseクエリチェーン用のモック
 const mockSelect = jest.fn();
 const mockEq = jest.fn();
 const mockNeq = jest.fn();
@@ -25,6 +27,7 @@ const mockSingle = jest.fn();
 const mockUpdate = jest.fn();
 const mockUpdateEq = jest.fn();
 
+// fromメソッドのモック
 const mockFrom = jest.fn(() => {
   return {
     select: mockSelect,
@@ -71,7 +74,7 @@ describe('updateProfile', () => {
     });
   });
 
-  // === 正常系テスト ===
+  // 正常系テスト
 
   it('正常系：ユーザー名とメールの更新のみ', async () => {
     // ユーザー取得成功のモック
@@ -159,7 +162,7 @@ describe('updateProfile', () => {
     expect(result).toBeUndefined();
   });
 
-  // === 異常系テスト ===
+  // 異常系テスト
 
   it('バリデーションエラー：必須項目とフォーマット', async () => {
     // ユーザー取得成功のモック

@@ -21,7 +21,7 @@ const signInSchema = z.object({
 });
 
 export async function signIn(formData: FormData): Promise<SignInResult> {
-  // --- ここでsupabaseクライアントを生成する理由 ---
+  //  ここでsupabaseクライアントを生成する理由
   // ・グローバルで1回だけ生成すると、テストのjest.mockで差し替えが効かず、テストでTypeErrorになるため
   // ・この関数内で都度生成すれば、実行ごとにモックを差し込める（テストしやすい）
   // ・また、リクエスト/レスポンスごとに状態を切り分けやすくなる
@@ -88,7 +88,7 @@ export async function signIn(formData: FormData): Promise<SignInResult> {
     return { errors };
   }
 
-  // --- サインイン成功: セッション情報をCookieに保存 ---
+  //  サインイン成功: セッション情報をCookieに保存
   const cookieStore = await cookies();
   cookieStore.set('user_id', user!.id, {
     httpOnly: true, // クライアントJSからアクセス不可

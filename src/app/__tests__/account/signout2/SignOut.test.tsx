@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import SignOut from '@/app/components/mypage2/signout2/SignOut';
 import { signOut } from '@/app/components/mypage2/signout2/actions';
 
-// アクションのモック
+// モックの設定
 jest.mock('@/app/components/mypage2/signout2/actions', () => ({
   signOut: jest.fn(),
 }));

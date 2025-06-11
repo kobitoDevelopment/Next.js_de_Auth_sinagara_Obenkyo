@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 // 型安全バリデーション
 import { z } from 'zod';
 
-// --- 入力値バリデーション用のZodスキーマを定義 ---
+//  入力値バリデーション用のZodスキーマを定義
 // 必須チェックや形式チェックのエラーメッセージもここで定義
 const RegisterSchema = z.object({
   username: z.string().min(1, 'ユーザー名は必須です'),
@@ -18,18 +18,18 @@ const RegisterSchema = z.object({
   password: z.string().min(6, 'パスワードは6文字以上で入力してください'),
 });
 
-// --- 戻り値型: エラーがあれば配列で返す、正常時はvoidでリダイレクト ---
+//  戻り値型: エラーがあれば配列で返す、正常時はvoidでリダイレクト
 export type RegisterResult = { errors?: string[] } | void;
-// --- ユーザー登録処理のメイン関数 ---
+//  ユーザー登録処理のメイン関数
 export async function registerUser(formData: FormData): Promise<RegisterResult> {
-  // --- Supabaseクライアントを関数内で生成 ---
+  //  Supabaseクライアントを関数内で生成
   // ・テスト時のモック差し替えのためグローバルではなくlocal生成
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  // --- フォームデータをオブジェクト化 ---
+  //  フォームデータをオブジェクト化
   // ・FormData.getで得た値をstring化し、空欄は""に
   const rawData = {
     username: formData.get('username')?.toString() || '',
@@ -38,7 +38,7 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     password: formData.get('password')?.toString() || '',
   };
 
-  // --- 1. バリデーションエラーをすべて集める ---
+  //  1. バリデーションエラーをすべて集める
   // ・Zodでチェックし、エラーはすべてerrors配列へ
   const parsed = RegisterSchema.safeParse(rawData);
   const errors: string[] = [];
@@ -46,7 +46,7 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     errors.push(...parsed.error.errors.map((e) => e.message));
   }
 
-  // --- 2. Supabaseで重複チェック（バリデーションエラーがあってもDBは問い合わせ） ---
+  //  2. Supabaseで重複チェック（バリデーションエラーがあってもDBは問い合わせ）
   // ・メールとユーザー名が入力された場合のみ問い合わせ
   const username = rawData.username;
   const email = rawData.email;
@@ -67,11 +67,11 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
   // DB問い合わせを並列で実行
   const dbCheckResults = await Promise.all(checkers);
 
-  // --- undefined安全化でTypeErrorを防止 ---
+  //  undefined安全化でTypeErrorを防止
   const emailUsers = dbCheckResults[0]?.data ?? [];
   const usernameUsers = dbCheckResults[1]?.data ?? [];
 
-  // --- 重複があればエラーに追加 ---
+  //  重複があればエラーに追加
   if (checkEmail && emailUsers.length > 0) {
     errors.push('このメールアドレスは既に登録されています');
   }
@@ -79,7 +79,7 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     errors.push('このユーザー名は既に登録されています');
   }
 
-  // --- 3. 問題なければユーザーをinsert ---
+  //  3. 問題なければユーザーをinsert
   if (errors.length === 0) {
     // パスワードをハッシュ化
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -98,16 +98,16 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     }
   }
 
-  // --- 4. エラーが1つでもあれば配列で返す ---
+  //  4. エラーが1つでもあれば配列で返す
   if (errors.length > 0) {
     return { errors };
   }
 
-  // --- 5. 正常時はサインイン画面にリダイレクト ---
+  //  5. 正常時はサインイン画面にリダイレクト
   redirect('/signin2');
 }
 
-// --- useActionState用ラッパー（Reactでフォーム状態管理する際に使用） ---
+//  useActionState用ラッパー（Reactでフォーム状態管理する際に使用）
 export const registerUserAction = async (
   prevState: RegisterResult,
   formData: FormData

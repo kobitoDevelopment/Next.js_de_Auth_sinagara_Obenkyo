@@ -32,9 +32,7 @@ export default function Form() {
   // 登録結果などのメッセージを表示するための状態
   const [message, setMessage] = useState('');
 
-  /**
-   * name に応じて適切なバリデーション関数を実行する
-   */
+  /*name に応じて適切なバリデーション関数を実行する */
   const validate = function (name: string, value: string): string {
     if (name === 'username') {
       return validateUsername(value);
@@ -53,8 +51,8 @@ export default function Form() {
 
   /**
    * 入力が変更されたときに呼ばれる
-   * - 入力値を状態に反映
-   * - 即時バリデーションを行ってエラー状態も更新
+   * 入力値を状態に反映
+   * 即時バリデーションを行ってエラー状態も更新
    */
   const handleChange = function (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const name = e.target.name;
@@ -72,8 +70,8 @@ export default function Form() {
 
   /**
    * フォームが送信されたときに実行
-   * - 入力値をバリデーション
-   * - エラーがなければ Supabase にデータ挿入
+   * 入力値をバリデーション
+   * エラーがなければ Supabase にデータ挿入
    */
 
   const handleSubmit = async function (e: React.FormEvent) {

@@ -4,15 +4,15 @@ import '@testing-library/jest-dom';
 import SignUp2Form from '@/app/components/signup2/SignUp';
 import { registerUserAction } from '@/app/components/signup2/actions';
 
-// モック
+// actionsのモック
 jest.mock('@/app/components/signup2/actions', () => ({
   registerUserAction: jest.fn(),
 }));
 
 // React.useActionStateのモック
-interface FormState {
+type FormState = {
   errors?: string[];
-}
+};
 
 jest.mock('react', () => {
   const originalReact = jest.requireActual('react');

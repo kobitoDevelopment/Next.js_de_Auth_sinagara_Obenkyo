@@ -2,7 +2,7 @@ import { deleteAccount } from '@/app/components/mypage2/delete2/actions';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
-// --- 外部依存のモック ---
+// Supabaseクライアントのモック
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
 }));
@@ -10,7 +10,8 @@ jest.mock('next/headers', () => ({
   cookies: jest.fn(),
 }));
 
-// --- Supabaseクエリチェーン用のモック ---
+// Supabaseクエリチェーン用のモック
+// deleteメソッドとeqメソッドのモック
 const mockDelete = jest.fn();
 const mockDeleteEq = jest.fn();
 
@@ -50,12 +51,12 @@ beforeEach(() => {
 });
 
 describe('deleteAccount', () => {
-  // --- 正常系テスト ---
-
+  // 正常系テスト
   it('正常系：アカウント削除が成功する', async () => {
     // 成功レスポンスを設定
     mockDeleteEq.mockResolvedValue({ error: null });
 
+    // アカウント削除を実行
     const result = await deleteAccount();
 
     // 成功フラグがtrueになっていることを確認
@@ -70,12 +71,12 @@ describe('deleteAccount', () => {
     expect(mockCookieStore.delete).toHaveBeenCalledWith('user_id');
   });
 
-  // --- 異常系テスト ---
-
+  // 異常系テスト
   it('異常系：ユーザーIDがない（未ログイン）場合', async () => {
     // Cookieに値がない状態をモック
     mockCookieStore.get.mockReturnValue(undefined);
 
+    // アカウント削除を実行
     const result = await deleteAccount();
 
     // エラーレスポンスを確認
@@ -95,6 +96,7 @@ describe('deleteAccount', () => {
     // Cookieはあるがvalueがnullの状態
     mockCookieStore.get.mockReturnValue({ value: null });
 
+    // アカウント削除を実行
     const result = await deleteAccount();
 
     // エラーレスポンスを確認
@@ -110,6 +112,7 @@ describe('deleteAccount', () => {
       error: { message: 'Database error', details: 'Constraint violation' },
     });
 
+    // アカウント削除を実行
     const result = await deleteAccount();
 
     // エラーレスポンスを確認
@@ -126,6 +129,7 @@ describe('deleteAccount', () => {
     // 例外をスローするようにモック
     mockDeleteEq.mockRejectedValue(new Error('Network error'));
 
+    // アカウント削除を実行
     const result = await deleteAccount();
 
     // エラーレスポンスを確認

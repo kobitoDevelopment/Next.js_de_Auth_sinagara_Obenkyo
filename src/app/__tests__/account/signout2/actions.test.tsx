@@ -2,11 +2,12 @@ import { signOut } from '@/app/components/mypage2/signout2/actions';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// 外部依存のモック
+// モックの設定
 jest.mock('next/headers', () => ({
   cookies: jest.fn(),
 }));
 
+// リダイレクト用のモック
 jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));

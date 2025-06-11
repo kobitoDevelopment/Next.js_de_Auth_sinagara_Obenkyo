@@ -3,18 +3,20 @@ import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 
-// --- 外部モジュールのモック定義 ---
+// supabase-jsのモックを設定
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
 }));
+// bcryptjsのモックを設定
 jest.mock('bcryptjs', () => ({
   hash: jest.fn(),
 }));
+// next/navigationのredirectメソッドをモック
 jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
-// --- Supabaseのメソッドチェーン用モック ---
+// Supabaseのメソッドチェーン用モック
 const mockSelect = jest.fn();
 const mockEq = jest.fn();
 const mockInsert = jest.fn();
@@ -31,7 +33,7 @@ const mockFrom = jest.fn((table: string) => {
 
 const mockSupabase = { from: mockFrom };
 
-// --- 各テスト前にモックを初期化 ---
+// 各テスト前にモックを初期化
 beforeEach(() => {
   jest.clearAllMocks();
   (createClient as jest.Mock).mockReturnValue(mockSupabase);
@@ -40,14 +42,14 @@ beforeEach(() => {
   mockEq.mockReset();
 });
 
-// --- FormDataを疑似的に作るユーティリティ関数 ---
+// FormDataを疑似的に作るユーティリティ関数
 function makeFormData(data: { [k: string]: string | number | null }) {
   return {
     get: (key: string) => data[key] ?? null,
   } as unknown as FormData;
 }
 
-// --- registerUser関数のテスト ---
+// registerUser関数のテスト
 describe('registerUser', () => {
   it('正常系：ユーザー登録成功時にリダイレクトされる', async () => {
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
@@ -210,7 +212,7 @@ describe('registerUser', () => {
     expect(redirect).not.toHaveBeenCalled();
   });
 
-  // --- 追加テストケース ---
+  // 追加テストケース
 
   it('型エラー: フォーム値がstring以外の場合は処理を継続する', async () => {
     // データ型がおかしいフォームデータ（数値型）
@@ -253,7 +255,6 @@ describe('registerUser', () => {
       error: null,
     });
 
-    // ここが抜けていた：insertのモックも設定する必要がある
     mockInsert.mockResolvedValue({ error: null });
 
     // ハッシュ化のモック
