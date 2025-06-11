@@ -1,5 +1,8 @@
 # Next.js_de_ToDo_sinagara_Obenkyo
 
+## 要件・仕様・設計
+docs/
+
 ## サイトマップ
 
 ```
