@@ -63,6 +63,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -86,6 +87,7 @@ describe('registerUser', () => {
       email: 'bademail',
       role: '',
       password: '1',
+      privacyPolicy: '', // プライバシーポリシーに同意しない
     });
 
     const result = await registerUser(formData);
@@ -96,6 +98,7 @@ describe('registerUser', () => {
         'メールアドレスの形式が正しくありません',
         'ロールは必須です',
         'パスワードは6文字以上で入力してください',
+        'プライバシーポリシーへの同意が必要です',
       ]),
     });
     expect(bcrypt.hash).not.toHaveBeenCalled();
@@ -114,6 +117,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -136,6 +140,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -158,6 +163,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -178,6 +184,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'abc',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -202,6 +209,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     const result = await registerUser(formData);
@@ -221,6 +229,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'password123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     // モックの準備
@@ -265,6 +274,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     // 実行
@@ -287,6 +297,7 @@ describe('registerUser', () => {
       email: 'test@example.com',
       role: 'user',
       password: 'secret123',
+      privacyPolicy: 'on', // プライバシーポリシーに同意
     });
 
     // 実行すると例外が発生（ハンドリングがなければ）
@@ -311,6 +322,7 @@ describe('registerUser', () => {
       email: null,
       role: null,
       password: null,
+      privacyPolicy: null, // プライバシーポリシーにも同意なし
     });
 
     const result = await registerUser(formData);
@@ -322,7 +334,58 @@ describe('registerUser', () => {
         'メールアドレスの形式が正しくありません',
         'ロールは必須です',
         'パスワードは6文字以上で入力してください',
+        'プライバシーポリシーへの同意が必要です',
       ]),
     });
+  });
+
+  // プライバシーポリシー関連の新しいテストケース
+  it('プライバシーポリシーに同意していない場合、エラーが返る', async () => {
+    const formData = makeFormData({
+      username: 'kobito',
+      email: 'test@example.com',
+      role: 'user',
+      password: 'secret123',
+      privacyPolicy: '', // 同意していない
+    });
+
+    const result = await registerUser(formData);
+
+    expect(result).toEqual({
+      errors: expect.arrayContaining(['プライバシーポリシーへの同意が必要です']),
+    });
+    expect(bcrypt.hash).not.toHaveBeenCalled();
+    expect(mockInsert).not.toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('プライバシーポリシーに同意している場合、登録処理が進む', async () => {
+    (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
+    mockEq
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
+    mockInsert.mockResolvedValue({ error: null });
+
+    const formData = makeFormData({
+      username: 'kobito',
+      email: 'test@example.com',
+      role: 'user',
+      password: 'secret123',
+      privacyPolicy: 'on', // 明示的に同意
+    });
+
+    const result = await registerUser(formData);
+
+    expect(bcrypt.hash).toHaveBeenCalledWith('secret123', 10);
+    expect(mockInsert).toHaveBeenCalledWith([
+      {
+        username: 'kobito',
+        email: 'test@example.com',
+        role: 'user',
+        password: 'hashedpass',
+      },
+    ]);
+    expect(redirect).toHaveBeenCalledWith('/signin2');
+    expect(result).toBeUndefined();
   });
 });

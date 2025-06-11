@@ -45,6 +45,7 @@ describe('SignUp2Form', () => {
     expect(screen.getByLabelText(/メールアドレス/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/ロール/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/パスワード/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/プライバシーポリシー.*に同意します/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /登録/i })).toBeInTheDocument();
   });
 
@@ -58,8 +59,15 @@ describe('SignUp2Form', () => {
     });
     fireEvent.change(screen.getByLabelText(/パスワード/i), { target: { value: 'password123' } });
 
+    // プライバシーポリシーに同意
+    fireEvent.click(screen.getByLabelText(/プライバシーポリシー.*に同意します/i));
+
+    // HTML5検証を回避するためのモック
+    jest.spyOn(HTMLFormElement.prototype, 'checkValidity').mockImplementation(() => true);
+
     // フォーム送信
-    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
+    const form = screen.getByRole('button', { name: /登録/i }).closest('form');
+    if (form) fireEvent.submit(form);
 
     // アクションが呼ばれたことを確認
     await waitFor(() => {
@@ -78,8 +86,12 @@ describe('SignUp2Form', () => {
     // フォーム送信前はエラーなし
     expect(screen.queryByText('ユーザー名は必須です')).not.toBeInTheDocument();
 
+    // HTML5検証を回避するためのモック
+    jest.spyOn(HTMLFormElement.prototype, 'checkValidity').mockImplementation(() => true);
+
     // フォーム送信
-    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
+    const form = screen.getByRole('button', { name: /登録/i }).closest('form');
+    if (form) fireEvent.submit(form);
 
     // React.useActionStateの状態更新をシミュレート（実際の実装では自動的に更新される）
     jest.spyOn(React, 'useActionState').mockImplementation(() => {
@@ -129,5 +141,64 @@ describe('SignUp2Form', () => {
     const passwordInput = screen.getByLabelText(/パスワード/i) as HTMLInputElement;
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     expect(passwordInput.value).toBe('password123');
+  });
+
+  // 新しいテストケース: プライバシーポリシーのチェックボックス
+  it('正常系：プライバシーポリシーのチェックボックスをチェックできる', () => {
+    render(<SignUp2Form />);
+
+    // チェックボックスを取得
+    const checkbox = screen.getByLabelText(
+      /プライバシーポリシー.*に同意します/i
+    ) as HTMLInputElement;
+
+    // 初期状態は未チェック
+    expect(checkbox.checked).toBe(false);
+
+    // チェックする
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(true);
+
+    // チェックを外す
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(false);
+  });
+
+  it('異常系：プライバシーポリシーに同意しない場合はエラーが表示される', async () => {
+    // プライバシーポリシー未同意のエラーを返すようにモック
+    (registerUserAction as jest.Mock).mockImplementation(async () => {
+      return { errors: ['プライバシーポリシーへの同意が必要です'] };
+    });
+
+    const { rerender } = render(<SignUp2Form />);
+
+    // 全フィールドに値を入力するが、プライバシーポリシーには同意しない
+    fireEvent.change(screen.getByLabelText(/ユーザー名/i), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByLabelText(/メールアドレス/i), {
+      target: { value: 'test@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText(/パスワード/i), { target: { value: 'password123' } });
+
+    // HTML5検証を回避するためのモック
+    jest.spyOn(HTMLFormElement.prototype, 'checkValidity').mockImplementation(() => true);
+
+    // フォーム送信
+    const form = screen.getByRole('button', { name: /登録/i }).closest('form');
+    if (form) fireEvent.submit(form);
+
+    // React.useActionStateの状態更新をシミュレート
+    jest.spyOn(React, 'useActionState').mockImplementation(() => {
+      return [
+        { errors: ['プライバシーポリシーへの同意が必要です'] },
+        jest.fn() as (payload: unknown) => void,
+        false,
+      ];
+    });
+
+    // 再レンダリング
+    rerender(<SignUp2Form />);
+
+    // エラーメッセージが表示されることを確認
+    expect(screen.getByText('プライバシーポリシーへの同意が必要です')).toBeInTheDocument();
   });
 });

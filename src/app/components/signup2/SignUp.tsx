@@ -70,6 +70,20 @@ export default function SignUp2Form() {
             </dd>
           </div>
         </dl>
+
+        <div className={styles.privacyLine}>
+          <label htmlFor="privacyPolicy" className={styles.checkboxLabel}>
+            プライバシーポリシー に同意します
+          </label>
+          <input
+            id="privacyPolicy"
+            type="checkbox"
+            name="privacyPolicy"
+            required
+            className={styles.checkbox}
+          />
+        </div>
+
         <button type="submit" className={styles.button}>
           登録
         </button>

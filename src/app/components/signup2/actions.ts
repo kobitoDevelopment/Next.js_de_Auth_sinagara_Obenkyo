@@ -16,6 +16,9 @@ const RegisterSchema = z.object({
   email: z.string().email('メールアドレスの形式が正しくありません'),
   role: z.string().min(1, 'ロールは必須です'),
   password: z.string().min(6, 'パスワードは6文字以上で入力してください'),
+  privacyPolicy: z.string().refine((val) => val === 'on', {
+    message: 'プライバシーポリシーへの同意が必要です',
+  }),
 });
 
 //  戻り値型: エラーがあれば配列で返す、正常時はvoidでリダイレクト
@@ -36,6 +39,7 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     email: formData.get('email')?.toString() || '',
     role: formData.get('role')?.toString() || '',
     password: formData.get('password')?.toString() || '',
+    privacyPolicy: formData.get('privacyPolicy')?.toString() || '',
   };
 
   //  1. バリデーションエラーをすべて集める
