@@ -55,3 +55,7 @@ DBへのアクセスをroute handler(fetch)で行うかserver actions(form)で�
 
 route handlerを使用する場合はcomponents/layout.tsxでサインイン状態判定+リダイレクトを実施しており、  
 server actionsを使用する場合はsrc/middleware.tsでサインイン状態判定+リダイレクトを実施しています。
+
+
+## デプロイ先URL
+https://next-js-de-to-do-sinagara-obenkyo.vercel.app/
