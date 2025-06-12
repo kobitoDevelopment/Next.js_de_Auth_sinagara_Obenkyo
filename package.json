@@ -11,7 +11,8 @@
     "lint:style:fix": "stylelint '**/*.css' --fix",
     "lint:eslint": "next lint",
     "test": "jest",
-    "check": "npm run lint:eslint && npm run lint:style:fix && npm run test"
+    "test:e2e": "playwright test",
+    "check": "npm run lint:eslint && npm run lint:style:fix && npm run test && npm run test:e2e"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.53.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.14",

@@ -28,6 +28,9 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+
+  // src/app/__test__/ ディレクトリのみをテスト対象にする
+  testMatch: ['<rootDir>/src/app/__tests__/**/*.{js,jsx,ts,tsx}'],
 };
 
 // Jest に Next.js 向けの拡張設定と共に、上で定義したカスタム設定を適用
