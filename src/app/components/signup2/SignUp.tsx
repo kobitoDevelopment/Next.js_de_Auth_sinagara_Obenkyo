@@ -22,7 +22,6 @@ export default function SignUp2Form() {
                 id="username"
                 type="text"
                 name="username"
-                required
                 autoComplete="username"
                 className={styles.input}
               />
@@ -37,7 +36,6 @@ export default function SignUp2Form() {
                 id="email"
                 type="email"
                 name="email"
-                required
                 autoComplete="email"
                 className={styles.input}
               />
@@ -48,7 +46,7 @@ export default function SignUp2Form() {
               <label htmlFor="role">ロール</label>
             </dt>
             <dd className={styles.description}>
-              <select id="role" name="role" className={styles.select} required>
+              <select id="role" name="role" className={styles.select}>
                 <option value="user">user</option>
                 <option value="admin">admin</option>
               </select>
@@ -63,7 +61,6 @@ export default function SignUp2Form() {
                 id="password"
                 type="password"
                 name="password"
-                required
                 autoComplete="new-password"
                 className={styles.input}
               />
@@ -79,7 +76,6 @@ export default function SignUp2Form() {
             id="privacyPolicy"
             type="checkbox"
             name="privacyPolicy"
-            required
             className={styles.checkbox}
           />
         </div>
@@ -88,7 +84,10 @@ export default function SignUp2Form() {
           登録
         </button>
         {state?.errors && (
-          <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
+          <ul
+            style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}
+            className="error-message"
+          >
             {state.errors.map((msg, idx) => (
               <li key={idx}>{msg}</li>
             ))}

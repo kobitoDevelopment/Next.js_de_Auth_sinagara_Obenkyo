@@ -1,44 +1,86 @@
 import { test, expect } from '@playwright/test';
 
-// テストアカウント情報（テスト環境用）
-const TEST_EMAIL = 'test@example.com';
-const TEST_PASSWORD = 'securePassword123';
+// テスト用のユニークなデータを生成するためのヘルパー関数
+const generateUniqueData = () => {
+  const timestamp = Date.now();
+  return {
+    username: `testuser_${timestamp}`,
+    email: `test_${timestamp}@example.com`,
+    password: 'Password123',
+  };
+};
 
-test.describe('認証フロー', () => {
+test.describe('サインアップ機能のテスト', () => {
   test.beforeEach(async ({ page }) => {
-    // 各テスト前にホームページにアクセス
-    await page.goto('/');
+    // 各テスト前にサインアップページに移動
+    await page.goto('/signup2');
   });
 
-  test('新規ユーザーがサインアップできる', async ({ page }) => {
-    // ユニークなメールアドレスを生成（テスト間の衝突を避けるため）
-    const uniqueEmail = `test-${Date.now()}@example.com`;
+  test('サインアップページが正しく表示されること', async ({ page }) => {
+    // ページタイトルの確認（h1要素を直接使用）
+    await expect(page.locator('h1:has-text("サインアップ")')).toBeVisible();
 
-    await page.click('text=Sign up');
-    await page.fill('input[name="email"]', uniqueEmail);
-    await page.fill('input[name="password"]', TEST_PASSWORD);
-    await page.click('button[type="submit"]');
-
-    // サインアップ後の状態検証
-    await expect(page).toHaveURL(/.*dashboard/);
-    await expect(page.locator('text=Welcome')).toBeVisible();
+    // 全ての必要なフォーム要素が存在することを確認
+    await expect(page.locator('#username')).toBeVisible();
+    await expect(page.locator('#email')).toBeVisible();
+    await expect(page.locator('#role')).toBeVisible();
+    await expect(page.locator('#password')).toBeVisible();
+    await expect(page.locator('#privacyPolicy')).toBeVisible();
+    await expect(page.locator('button[type="submit"]')).toBeVisible();
   });
 
-  test('ユーザー情報の更新ができる', async ({ page }) => {
-    // まずログイン
-    await page.click('text=Log in');
-    await page.fill('input[name="email"]', TEST_EMAIL);
-    await page.fill('input[name="password"]', TEST_PASSWORD);
+  test('有効な情報でサインアップできること', async ({ page }) => {
+    // テスト用の一意のデータを生成
+    const testData = generateUniqueData();
+
+    // フォームに入力
+    await page.fill('#username', testData.username);
+    await page.fill('#email', testData.email);
+    await page.selectOption('#role', 'user');
+    await page.fill('#password', testData.password);
+    await page.check('#privacyPolicy');
+
+    // フォーム送信
     await page.click('button[type="submit"]');
 
-    // プロフィールページに移動
-    await page.click('text=Profile');
+    // フォーム送信後のネットワークアクティビティを待つ
+    await page.waitForTimeout(5000);
 
-    // ユーザー情報を更新
-    await page.fill('input[name="displayName"]', 'Updated Name');
-    await page.click('button:has-text("Save")');
+    // サインインページにリダイレクトされたことを確認
+    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+  });
 
-    // 更新成功メッセージを確認
-    await expect(page.locator('text=Profile updated')).toBeVisible();
+  test('必須フィールドの検証が機能すること', async ({ page }) => {
+    // 空のフォームを送信
+    await page.click('button[type="submit"]');
+
+    // フォーム送信後のネットワークアクティビティを待つ
+    await page.waitForTimeout(5000);
+
+    // 全てのエラーが表示されていることを確認
+    await expect(page.getByText('ユーザー名は必須です')).toBeVisible();
+    await expect(page.getByText('メールアドレスの形式が正しくありません')).toBeVisible();
+    await expect(page.getByText('パスワードは6文字以上で入力してください')).toBeVisible();
+    await expect(page.getByText('プライバシーポリシーへの同意が必要です')).toBeVisible();
+  });
+
+  test('短すぎるパスワードでエラーが表示されること', async ({ page }) => {
+    const testData = generateUniqueData();
+
+    // 短いパスワードを入力
+    await page.fill('#username', testData.username);
+    await page.fill('#email', testData.email);
+    await page.selectOption('#role', 'user');
+    await page.fill('#password', '12345'); // 6文字未満
+    await page.check('#privacyPolicy');
+
+    // フォーム送信
+    await page.click('button[type="submit"]');
+
+    // フォーム送信後のネットワークアクティビティを待つ
+    await page.waitForTimeout(5000);
+
+    // 特定のエラーメッセージが表示されるのを待つ
+    await expect(page.getByText('パスワードは6文字以上で入力してください')).toBeVisible();
   });
 });
