@@ -115,17 +115,6 @@ describe('SignIn2Form', () => {
     expect(passwordInput.value).toBe('password123');
   });
 
-  it('正常系：フォームの必須属性が設定されている', () => {
-    render(<SignIn2Form />);
-
-    // 必須属性の確認
-    const emailInput = screen.getByLabelText(/メールアドレス/i) as HTMLInputElement;
-    const passwordInput = screen.getByLabelText(/パスワード/i) as HTMLInputElement;
-
-    expect(emailInput).toHaveAttribute('required');
-    expect(passwordInput).toHaveAttribute('required');
-  });
-
   it('正常系：入力タイプが正しく設定されている', () => {
     render(<SignIn2Form />);
 

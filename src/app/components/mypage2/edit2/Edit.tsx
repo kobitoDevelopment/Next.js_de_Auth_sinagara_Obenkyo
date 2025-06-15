@@ -23,7 +23,7 @@ export default function EditProfilePage() {
               <label htmlFor="username">ユーザー名</label>
             </dt>
             <dd className={styles.description}>
-              <input id="username" type="text" name="username" required className={styles.input} />
+              <input id="username" type="text" name="username" className={styles.input} />
             </dd>
           </div>
           <div className={styles.line}>
@@ -31,7 +31,7 @@ export default function EditProfilePage() {
               <label htmlFor="email">メールアドレス</label>
             </dt>
             <dd className={styles.description}>
-              <input id="email" type="email" name="email" required className={styles.input} />
+              <input id="email" type="email" name="email" className={styles.input} />
             </dd>
           </div>
           <div className={styles.line}>

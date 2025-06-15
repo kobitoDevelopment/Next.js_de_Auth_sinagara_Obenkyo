@@ -19,7 +19,7 @@ export default function SignIn2Form() {
               <label htmlFor="email">メールアドレス</label>
             </dt>
             <dd className={styles.description}>
-              <input id="email" type="email" name="email" required className={styles.input} />
+              <input id="email" type="email" name="email" className={styles.input} />
             </dd>
           </div>
           <div className={styles.line}>
@@ -27,13 +27,7 @@ export default function SignIn2Form() {
               <label htmlFor="password">パスワード</label>
             </dt>
             <dd className={styles.description}>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                required
-                className={styles.input}
-              />
+              <input id="password" type="password" name="password" className={styles.input} />
             </dd>
           </div>
         </dl>
@@ -41,7 +35,10 @@ export default function SignIn2Form() {
           サインイン
         </button>
         {state?.errors && (
-          <ul style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}>
+          <ul
+            style={{ color: 'red', margin: 0, padding: 0, listStyle: 'none' }}
+            className="error-message"
+          >
             {state.errors.map((msg, idx) => (
               <li key={idx}>{msg}</li>
             ))}

@@ -161,12 +161,10 @@ describe('EditProfilePage', () => {
     // ユーザー名フィールド
     const usernameInput = screen.getByLabelText(/ユーザー名/i);
     expect(usernameInput).toHaveAttribute('type', 'text');
-    expect(usernameInput).toHaveAttribute('required');
 
     // メールアドレスフィールド
     const emailInput = screen.getByLabelText(/メールアドレス/i);
     expect(emailInput).toHaveAttribute('type', 'email');
-    expect(emailInput).toHaveAttribute('required');
 
     // 現在のパスワードフィールド（任意）
     const currentPasswordInput = screen.getByLabelText(/現在のパスワード/i);
@@ -176,6 +174,5 @@ describe('EditProfilePage', () => {
     // 新しいパスワードフィールド（任意）
     const newPasswordInput = screen.getByLabelText(/新しいパスワード/i);
     expect(newPasswordInput).toHaveAttribute('type', 'password');
-    expect(newPasswordInput).not.toHaveAttribute('required');
   });
 });
