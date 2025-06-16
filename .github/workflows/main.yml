@@ -9,10 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # ここで全体に適用される環境変数を設定
     env:
-      # CI環境で必要な環境変数をここで設定
-      # シークレットは GitHub リポジトリの Settings > Secrets and variables > Actions で設定
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
@@ -23,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # 使用しているNode.jsのバージョンを指定
+          node-version: "20"
 
       - name: Install dependencies
         run: npm ci
@@ -34,14 +31,17 @@ jobs:
       - name: Run Stylelint
         run: npx stylelint "**/*.css"
       
-      # e2eテスト用の設定
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         
       - name: Run Playwright tests
+        # Playwrightを実行する前に.envファイルを作成
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" > .env.local
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env.local
+          npx playwright test
         env:
           TEST_ENV: "ci"
-        run: npx playwright test
         
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
