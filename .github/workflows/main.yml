@@ -9,6 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # ここで全体に適用される環境変数を設定
+    env:
+      # CI環境で必要な環境変数をここで設定
+      # シークレットは GitHub リポジトリの Settings > Secrets and variables > Actions で設定
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      API_KEY: ${{ secrets.API_KEY }}
 
     steps:
       - name: Checkout code
@@ -27,15 +33,18 @@ jobs:
 
       - name: Run Stylelint
         run: npx stylelint "**/*.css"
-        
+      
+      # e2eテスト用の設定
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         
       - name: Run Playwright tests
+        env:
+          TEST_ENV: "ci"
         run: npx playwright test
         
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v4  # v3から更新
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
