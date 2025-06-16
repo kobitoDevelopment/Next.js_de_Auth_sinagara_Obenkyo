@@ -13,8 +13,8 @@ jobs:
     env:
       # CI環境で必要な環境変数をここで設定
       # シークレットは GitHub リポジトリの Settings > Secrets and variables > Actions で設定
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      API_KEY: ${{ secrets.API_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
     steps:
       - name: Checkout code
