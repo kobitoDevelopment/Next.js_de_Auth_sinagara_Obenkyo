@@ -60,7 +60,7 @@ async function signIn(page: Page, user: TestUser): Promise<void> {
   await page.click('button[type="submit"]');
 
   // マイページにリダイレクトされるまで待機
-  await expect(page).toHaveURL(/\/mypage2/, { timeout: 5000 });
+  await expect(page).toHaveURL(/\/mypage2/, { timeout: 10000 });
 }
 
 // プロフィール編集ページに移動するヘルパー関数

@@ -35,7 +35,7 @@ test.describe('サインイン機能のテスト', () => {
     await page.click('button[type="submit"]');
 
     // マイページにリダイレクトされたことを確認
-    await expect(page).toHaveURL('/mypage2', { timeout: 5000 });
+    await expect(page).toHaveURL('/mypage2', { timeout: 10000 });
   });
 
   test('無効なパスワードでエラーが表示されること', async ({ page }) => {

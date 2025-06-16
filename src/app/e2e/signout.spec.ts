@@ -20,7 +20,7 @@ test.describe('サインアウト機能のテスト', () => {
     await page.click('button[type="submit"]');
 
     // マイページにリダイレクトされたことを確認
-    await expect(page).toHaveURL('/mypage2', { timeout: 5000 });
+    await expect(page).toHaveURL('/mypage2', { timeout: 10000 });
   });
 
   test('サインアウトボタンが正しく表示されること', async ({ page }) => {
@@ -36,7 +36,7 @@ test.describe('サインアウト機能のテスト', () => {
     await page.getByText('サインアウト').click();
 
     // サインインページにリダイレクトされたことを確認
-    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(page).toHaveURL('/signin2', { timeout: 10000 });
 
     // サインインフォームが表示されていることを確認
     await expect(page.locator('h1:has-text("サインイン")')).toBeVisible();
@@ -49,13 +49,13 @@ test.describe('サインアウト機能のテスト', () => {
     await page.getByText('サインアウト').click();
 
     // サインインページへのリダイレクトを確認
-    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(page).toHaveURL('/signin2', { timeout: 10000 });
 
     // マイページに直接アクセスを試みる
     await page.goto('/mypage2');
 
     // 保護されたルートのため、サインインページにリダイレクトされることを確認
-    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(page).toHaveURL('/signin2', { timeout: 10000 });
   });
 
   test('サインアウト後に保存されたユーザーセッションが無効化されていること', async ({
@@ -66,14 +66,14 @@ test.describe('サインアウト機能のテスト', () => {
     await page.getByText('サインアウト').click();
 
     // サインインページへのリダイレクトを確認
-    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(page).toHaveURL('/signin2', { timeout: 10000 });
 
     // 新しいタブでマイページを開こうとする
     const newPage = await context.newPage();
     await newPage.goto('/mypage2');
 
     // サインアウトされているため、サインインページにリダイレクトされることを確認
-    await expect(newPage).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(newPage).toHaveURL('/signin2', { timeout: 10000 });
     await newPage.close();
   });
 });

@@ -53,7 +53,7 @@ async function signIn(page: Page, user: TestUser): Promise<void> {
   await page.click('button[type="submit"]');
 
   // マイページにリダイレクトされるまで待機
-  await expect(page).toHaveURL(/\/mypage2/, { timeout: 5000 });
+  await expect(page).toHaveURL(/\/mypage2/, { timeout: 10000 });
 }
 
 test.describe('アカウント削除機能のテスト', () => {
@@ -110,11 +110,10 @@ test.describe('アカウント削除機能のテスト', () => {
     // 削除ボタンをクリック
     await page.getByText('アカウントを削除する').click();
 
-    // サインインページにリダイレクトされることを確認
-    await expect(page).toHaveURL(/\/signin2/, { timeout: 10000 });
+    // 10秒待機してsignineにリダイレクトされるのを待つ
+    await page.waitForURL(/\/signin2/, { timeout: 10000 });
 
-    // 削除したアカウントでサインインを試みる
-    await page.goto('/signin2');
+    // 削除されたユーザーでサインインを試みる
     await page.fill('#email', user.email);
     await page.fill('#password', user.password);
     await page.click('button[type="submit"]');

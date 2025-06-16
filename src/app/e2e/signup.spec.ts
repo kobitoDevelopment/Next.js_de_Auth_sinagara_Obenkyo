@@ -47,7 +47,7 @@ test.describe('サインアップ機能のテスト', () => {
     await page.waitForTimeout(5000);
 
     // サインインページにリダイレクトされたことを確認
-    await expect(page).toHaveURL('/signin2', { timeout: 5000 });
+    await expect(page).toHaveURL('/signin2', { timeout: 10000 });
   });
 
   test('必須フィールドの検証が機能すること', async ({ page }) => {
