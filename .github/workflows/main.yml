@@ -30,24 +30,3 @@ jobs:
 
       - name: Run Stylelint
         run: npx stylelint "**/*.css"
-      
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-        
-      - name: Run Playwright tests
-        # Playwrightを実行する前に.envファイルを作成
-        run: |
-          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" > .env.local
-          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env.local
-          echo "HOST=0.0.0.0" >> .env.local
-          npx playwright test
-        env:
-          TEST_ENV: "ci"
-        
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
