@@ -27,16 +27,19 @@ npm run dev
 ```
 
 ## テスト
-ユニットテスト ... CIで実行
-E2Eテスト ... ローカル環境でのみ実行
+### ユニットテスト
+CIで実行
 
-### Jest
+### E2Eテスト
+ローカル環境でのみ実行
+
+### ユニットテスト(Jest)実行用コマンド
 
 ```
 npx jest
 ```
 
-#### PlayWright
+#### E2E(PlayWright)実行用コマンド
 
 ```
 npx playwright test
