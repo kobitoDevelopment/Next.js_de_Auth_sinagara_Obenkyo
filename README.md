@@ -26,7 +26,9 @@ npm install
 npm run dev
 ```
 
-## テスト実行用コマンド
+## テスト
+ユニットテスト ... CIで実行
+E2Eテスト ... ローカル環境でのみ実行
 
 ### Jest
 
@@ -47,7 +49,6 @@ npm run check
 ```
 
 ## バックエンド(DB)
-
 supabase
 
 ## Authまわり
