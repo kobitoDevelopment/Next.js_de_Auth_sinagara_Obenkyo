@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.box {
+  width: 94%;
+  max-width: 840px;
+  margin-inline: auto;
+  padding: 32px;
+  border-radius: 32px;
+  background-color: var(--color-white-2);
+  box-shadow:
+    inset 5px 5px 10px var(--color-gray-2),
+    inset -5px -5px 10px var(--color-white-1);
+}
+
+.title {
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+  font-family: var(--font-dotgothic);
+}
