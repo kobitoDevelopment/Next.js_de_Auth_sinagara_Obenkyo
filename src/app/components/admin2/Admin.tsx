@@ -88,7 +88,7 @@ export default function AdminUsersPage() {
     }
 
     return (
-      <nav aria-label="ページネーション" className={styles.paginationNav}>
+      <nav className={styles.paginationNav}>
         <ul className={styles.pagination}>{pageItems}</ul>
       </nav>
     );

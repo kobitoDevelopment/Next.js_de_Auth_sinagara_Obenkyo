@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 // テスト用のダミーデータ（サインイン用）
 const testUser = {
-  email: 'user7@gmail.com',
-  password: 'user7user7',
+  email: 'user1@gmail.com',
+  password: 'user1user1',
 };
 
 test.describe('サインアウト機能のテスト', () => {
